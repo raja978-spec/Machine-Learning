@@ -61,7 +61,7 @@
 
 '''
 
-#     STEPS IN MACHINE LEARNING
+#         STEPS IN MACHINE LEARNING
 '''
 1. Data Collection:
 
