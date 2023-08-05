@@ -55,9 +55,47 @@
  
                             Ex: Gaming, A game's character
                                 learns the move from 
-                                 the game played with humans,
-                                 and execute's it's move when 
-                                 it play with some other humans
+                                the game played with humans,
+                                and execute's it's move when 
+                                it play with some other humans
 
 '''
+
+#     STEPS IN MACHINE LEARNING
+'''
+1. Data Collection:
+
+   * Done by analytics and data science, data mining
+   * Data preprocessing, data cleaning are done here
+   
+2. Data Modeling:
+   
+   * Trains that data, for this various algorithms
+     are used
+   * Checks the accurancy of data
+   
+3. Deployment: Once the model gives accurate results
+               then it started to deployed in some 
+               project
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
