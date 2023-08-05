@@ -34,12 +34,30 @@
                             instead that it has only 
                             features
 
-                            EX: It finds similar pattern
-                            from unknow data, and tries
+                            It finds similar pattern
+                            from unknow data, groups 
+                            that similar pattern, and tries
                             to find what type of data is
                             that
 
                             EX2: youtube recommandation 
                                  system.
- 3. Reinforcement Learning
+
+ 3. Reinforcement Learning - It continously learns from the
+                             data we have given, makes
+                             model from it, finally it
+                             execute's its model, if it 
+                             works then the point are given 
+                             for that model, if it doesn't
+                             works in proper way it losses
+                             it's points, this process are
+                             doen in continous manner
+ 
+                            Ex: Gaming, A game's character
+                                learns the move from 
+                                 the game played with humans,
+                                 and execute's it's move when 
+                                 it play with some other humans
+
 '''
+
