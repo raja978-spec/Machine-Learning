@@ -40,6 +40,8 @@
                             to find what type of data is
                             that
 
+                            Here Clustering are performed
+
                             EX2: youtube recommandation 
                                  system.
 

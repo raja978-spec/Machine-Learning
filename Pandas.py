@@ -173,3 +173,33 @@
                  DF format
 '''
 
+#         TO_CSV FUNCTION
+'''
+Helps to change the given data frame into csv file
+
+import pandas as pd
+import string
+obj=string.ascii_uppercase
+data={"Name":["a","b","c"],"Age":["12","20","6",]}
+df=pd.DataFrame(data,index=[obj[i] for i in range(len(data["Name"]))])
+df.to_csv("data.csv")
+print(df)
+
+'''
+
+
+#    DF INDEXING
+'''
+ Dfname["ColumnName"][index_value]=value
+'''
+
+#   DIFFERENCE BETWEEN DF AND SERIED
+'''
+* Series is an column in a table, contains 1
+  dimensional array data, that may contain different
+  types of data, it contians either only row or
+  column
+
+* DF is 2(rows,column) dimensional labeled data with different
+  data types.
+'''
