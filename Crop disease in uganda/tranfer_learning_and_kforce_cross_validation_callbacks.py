@@ -104,10 +104,10 @@
 
  # you can safely skip this cell and load the model in the next cell
 
-training_records = {}
-fold_count = 0
+ training_records = {}
+ fold_count = 0
 
-for train_idx, val_idx in kfold_splitter.split(np.arange(len(dataset))):
+ for train_idx, val_idx in kfold_splitter.split(np.arange(len(dataset))):
     fold_count += 1
     print("*****Fold {}*****".format(fold_count))
 
@@ -179,7 +179,75 @@ for train_idx, val_idx in kfold_splitter.split(np.arange(len(dataset))):
  plot_all_folds(training_records, "train_losses")
 '''
 
-#    CALLBACKS
+#                    CALLBACKS
 '''
- Helps to modify the training process to perform better
+ Helps to modify the pre-trained training process to perform model better, it is a
+ function that changes the training process.
+
+ Three most common callbacks:
+
+ 1. Early Stopping - Stop training the model when decreased loss function 
+                     started increasing.
+
+                     So it halts training when condition met
+
+                     early_stopping(watch='train_loss', patience=5)
+
+                     Above function will stop training when train_loss
+                     is not increased for 5 epochs.
+
+ 2. Model Checkpointing  - Saves the model every time validation loss gets 
+                           better than in the epoch prior. 
+
+                           This allows us to recover the best model 
+                           once training completes.
+                           
+                           checkpointing(watch='train_loss')
+
+ 3. Learning Rate Scheduler - Change learning rate during training. It
+                              is found in adam optimizer. Helps to
+                              avoid overfitting.
+
+                              lr_scheduler(freq, decrease_rate)
+'''
+
+#              LEARNING RATE SCHEDULER
+'''
+ For the Learning Rate Scheduling, we'll use StepLR 
+ from torch.optim. The StepLR scheduler decays the 
+ learning rate by multiplicative factor gamma every 
+ step_size epochs.
+
+ The multiplicative factor (gamma) in StepLR is the 
+ value by which the learning rate is multiplied after 
+ every step_size epochs.
+
+ For example:
+
+ Initial learning rate: 0.1
+ gamma: 0.5
+ step_size: 2
+ 
+ After every 2 epochs:
+ Epoch 1-2: Learning rate = 0.1
+ Epoch 3-4: Learning rate = 0.1 × 0.5 = 0.05
+ Epoch 5-6: Learning rate = 0.05 × 0.5 = 0.025
+ 
+ So, gamma controls how much the learning rate decreases.
+
+ from torch.optim.lr_scheduler import StepLR
+ 
+ # Period of learning rate decay
+ step_size = 4
+ # Multiplicative factor of learning rate decay
+ gamma = 0.2
+
+ # Initialize the learning rate scheduler
+ scheduler = StepLR(
+    optimizer,
+    step_size=step_size,
+    gamma=gamma,
+ ) 
+
+ print(type(scheduler))
 '''
