@@ -1,3 +1,0 @@
-#              PYTORCH TENSORS
-'''
-'''
