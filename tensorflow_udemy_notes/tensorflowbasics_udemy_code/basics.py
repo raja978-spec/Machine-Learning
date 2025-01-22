@@ -467,7 +467,9 @@ with tf.compat.v1.Session() as sess:
     accuracy = sess.run(accuracy_op, feed_dict={X: test_data, Y: test_labels})
     print('Test accuray', accuracy)
 
-'''
+
+        WORKING CODE
+
 import tensorflow as tf
 
 # Define architecture parameters
@@ -511,3 +513,277 @@ test_labels = tf.keras.utils.to_categorical(np.random.randint(0, output_size, nu
 # Evaluating the model
 test_loss, test_accuracy = model.evaluate(test_data, test_labels, batch_size=batch_size)
 print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")
+
+
+'''
+
+#     ACTIVATION FUNCTIONS IN TENSORFLOW
+'''
+ Allowing neural networks to learn complex patterns and 
+ relationships in data.
+
+ They are applied to the output of each neuron in a neural network, 
+ transforming the input signal into, the output signal that is passed 
+ to the next layer.
+ 
+ 1. Linear Activation Function - Used for regression tasks, where the
+                                 output number will be real numbers.
+
+                                 But it is rarely use due to its
+                                 limited representation.
+
+                                 In mathematical terms, f(x) = x
+
+EX:
+
+import tensorflow as tf
+input=32
+output=tf.keras.activations.linear(input)
+print(output)
+
+OUTPUT: 32
+
+ 2. Sigmoid - Squeezes the input values between 0 and 1, used for binary
+              classification where the output represents possibilities.
+
+EX:
+
+import tensorflow as tf
+input=32.00
+output=tf.keras.activations.sigmoid(input)
+print(output)
+
+OUTPUT:
+tf.Tensor(1.0, shape=(), dtype=float32)
+
+3. Hyperbolic Tangent - Squeezes the input values between -1 and 1, used
+                         in hidden layer
+
+
+EX:
+
+import tensorflow as tf
+input=32.00
+output=tf.keras.activations.tanh(input)
+print(output)
+
+OUTPUT:
+tf.Tensor(1.0, shape=(), dtype=float32)
+
+
+4. Rectified Linear Unit - The rectified linear unit activation 
+                           function introduces non-linearity by 
+                           outputting the input value if it is positive
+
+                           If it is negative it returns 0 
+
+                           Widely used in hidden layers due to it's simplicity
+
+EX:
+
+import tensorflow as tf
+input=-32.00
+output=tf.keras.activations.relu(input)
+print(output)
+
+OUTPUT:
+tf.Tensor(0.0, shape=(), dtype=float32)
+
+
+5. Leaky Rectified Linear Unit - The leaky ReLU activation function 
+                                 addresses the dying ReLU problem by 
+                                 allowing a small positive gradient
+                                 when the input is negative.It 
+                                 helps prevent the issues of neurons 
+                                 becoming inactive during training.
+
+                                 The "dying ReLU" problem occurs when 
+                                 the Rectified Linear Unit (ReLU) 
+                                 activation outputs zero for all 
+                                 negative inputs, causing some neurons 
+                                 to stop learning as their gradients 
+                                 become zero. For example, if a neuron 
+                                 consistently has negative inputs, ReLU 
+                                 will always output 0, and its weights 
+                                 won't update during training
+
+EX:
+
+import tensorflow as tf
+input=-32.00 # Here it returns always zero as it is negative
+output=tf.keras.activations.relu(input)
+print(output)
+
+OUTPUT:
+tf.Tensor(0.0, shape=(), dtype=float32)
+
+
+EX: To avoid the above problem leaky multiplies small gardient value
+    which is 0.1 to all the tensor values in tensor
+
+import tensorflow as tf
+input=tf.constant([-32.00, 32.000])
+output=tf.keras.layers.LeakyReLU(alpha=0.2)(input)
+print(output)
+
+OUTPUT:
+tf.Tensor([-6.4 32. ], shape=(2,), dtype=float32)
+ 
+ 6. Softmax - Used to multiclassification, converts input values into
+              probability distribution over multiple classes ensuring the
+              output sum to one
+
+EX:
+import tensorflow as tf
+input=tf.constant([24.00, 32.000])
+output=tf.keras.activations.softmax(input)
+print(output)
+
+OUTPUT:
+tf.Tensor([3.3535017e-04 9.9966466e-01], shape=(2,), dtype=float32)
+'''
+
+#   LOSS FUNCTIONS AND OPTIMIZERS
+'''
+
+ Used to measuring the model's performance and updating its 
+ parameters to minimize the loss.
+
+ Loss functions finds the difference between the model's predicted output
+ (labels) and the actual output (labels).
+
+ 1. Mean Squared Error - Used to find the average value of predicted and
+                         actual labels.
+
+
+EX:
+
+import tensorflow as tf
+print(tf.keras.losses.MeanSquaredError())
+
+DEPRECATED:
+
+import tensorflow as tf
+print(tf.keras.losses.mean_squared_error())
+
+
+2. Binary Cross-Entropy - helps to measure the binary classification's predicted and 
+                          and actual labels.
+
+
+EX: tf.keras.losses.binary_crossentropy(true_labels, predicted_labels)
+ 
+ 3. Categorical Cross-Entropy - helps to measure the multiclass classification's predicted and 
+                          and actual labels.
+
+
+EX: tf.keras.losses.categorical_crossentropy(true_labels, predicted_labels)
+
+  4. Sparse Categorical Cross-Entropy - helps to measure the multiclass 
+                                       classification's predicted 
+                                       and actual labels. But accepts 
+                                       only integer values as its labels.
+
+
+EX: tf.keras.losses.sparse_categorical_crossentropy(true_labels, predicted_labels)
+
+
+                            OPTIMIZERS
+
+Optimizers are algorithms used to minimize the loss function by 
+updating the models parameters, weights and biases during training.
+
+1. Stochastic Gradient Descent (SGD) - The most basic optimizer, 
+                                      updates the weights and biases 
+                                      using the gradient of the loss 
+                                      function.
+
+EX:
+
+import tensorflow as tf
+print(tf.keras.optimizers.SGD())
+
+2. Adam - A variant of SGD that uses adaptive learning rates for 
+          different parameters. Combines the advantages of both Adagrad and 
+          Rmsprop algorithm
+
+EX:
+
+import tensorflow as tf
+print(tf.keras.optimizers.Adam())
+
+3. RMPSProp - Root mean square propagation
+
+              This adjusts the learning rate for each parameter 
+              based on the magnitude of recent gradients.
+              
+              It prevents the learning rate from decreasing too 
+              fast for frequently occurring parameters.
+
+              The magnitude is a measure of the "size" of the gradient.
+
+EX:
+import tensorflow as tf
+print(tf.keras.optimizers.RMSprop(learning_rate=0.001))
+
+
+4. Adagrad - Adaptive gradient algorithm
+            
+             adapts the learning rate for each parameter based on the historical 
+             gradients of that parameter.
+
+             It allocates more learning to less frequently occurring parameters
+
+EX:
+
+import tensorflow as tf
+print(tf.keras.optimizers.Adagrad(learning_rate=0.01))
+
+
+                CUSTOM LOSS FUNCTION ANS OPTIMIZERS
+
+import tensorflow as tf
+class CustomLoss(tf.keras.losses.Loss):
+    def __init__(self):
+        super(CustomLoss, self).__init__()
+    
+    def call(self, y_true, y_pred):
+        return tf.math.square(y_true - y_pred)
+
+custom_loss = CustomLoss()
+custom_optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
+
+class CustomOptimizer(tf.keras.optimizers.Optimizer):
+    def __init__(self, learning_rate=0.01):
+        super(CustomOptimizer, self).__init__(learning_rate)
+
+    def apply_gradients(self, grads_and_vars):
+        for grad, var in grads_and_vars:
+            var.assign_sub(self.learning_rate * grad)
+        return []
+
+custom_optimizer = CustomOptimizer(learning_rate=0.01)
+print(custom_optimizer)
+'''
+import tensorflow as tf
+class CustomLoss(tf.keras.losses.Loss):
+    def __init__(self):
+        super(CustomLoss, self).__init__()
+    
+    def call(self, y_true, y_pred):
+        return tf.math.square(y_true - y_pred)
+
+custom_loss = CustomLoss()
+custom_optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
+
+class CustomOptimizer(tf.keras.optimizers.Optimizer):
+    def __init__(self, learning_rate=0.01):
+        super(CustomOptimizer, self).__init__(learning_rate)
+
+    def apply_gradients(self, grads_and_vars):
+        for grad, var in grads_and_vars:
+            var.assign_sub(self.learning_rate * grad)
+        return []
+
+custom_optimizer = CustomOptimizer(learning_rate=0.01)
+print(custom_optimizer)
