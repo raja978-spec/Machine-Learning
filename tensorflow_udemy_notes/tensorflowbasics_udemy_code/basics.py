@@ -765,25 +765,268 @@ class CustomOptimizer(tf.keras.optimizers.Optimizer):
 custom_optimizer = CustomOptimizer(learning_rate=0.01)
 print(custom_optimizer)
 '''
+
+#  BUILD MODEL USING KERAS API
+'''
+ * Working on the top of tensorflow
+ * Has modular approach to develop the model 
+   in more efficient way.
+
+ Components of keras API:
+
+    1. Layers - used of building neural networks, including dense, 
+                fully connected, convolutional, recurrent, 
+                dropout etc.
+
+    2. Activations - Keras supports various activation functions
+                     such as sigmoid, tanh, ReLU, softmax, etc.
+                    which introduce non-linearity into the network
+
+    3. Loss Functions 
+
+    4. Optimizers
+
+    5. Metrics - Keras provides built in metrics to evaluate model 
+                 performance during training, such as accuracy, 
+                 precision.
+
+    6. Callbacks - Keras provides callbacks to monitor and 
+                   control training process, such as early stopping,
+                   model saving, learning rate scheduling, etc.
+
+
+EXAMPLE NEURAL NETWORK IN KERAS
+
 import tensorflow as tf
-class CustomLoss(tf.keras.losses.Loss):
-    def __init__(self):
-        super(CustomLoss, self).__init__()
-    
-    def call(self, y_true, y_pred):
-        return tf.math.square(y_true - y_pred)
+print(tf.__version__)
 
-custom_loss = CustomLoss()
-custom_optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
+# Load sample dataset
+# Mnist is the collection of handwritten digits
+# All the digits are represents images
 
-class CustomOptimizer(tf.keras.optimizers.Optimizer):
-    def __init__(self, learning_rate=0.01):
-        super(CustomOptimizer, self).__init__(learning_rate)
+mins = tf.keras.datasets.mnist
 
-    def apply_gradients(self, grads_and_vars):
-        for grad, var in grads_and_vars:
-            var.assign_sub(self.learning_rate * grad)
-        return []
+# x and y train will have the handwritten digits(images) that are 
+# with their respective lables, x and y test have the same
+# values which used to evaluate model's prediction
 
-custom_optimizer = CustomOptimizer(learning_rate=0.01)
-print(custom_optimizer)
+(x_train,y_train), (x_test,y_test) = mins.load_data()
+
+# Normalizes the pixels values in train and test 
+# By divding the each pixel values in train and test
+# the value will be in between 0 and 1, 0 represents black
+# and 1 represents white.
+
+x_train, x_test = x_train / 255.0, x_test / 255.0
+
+# Sequential model is a linear stack of layers where you can simply 
+# add one layer at a time.
+
+# The firt layer of the model is flatten which helps to change
+# the 2D array (which has the shape of 28*28) to 1D array 
+# like 28 * 28 = 784, because Dense layer performs operations on 
+# a flat vector of input values. 
+# It requires a 1D array for each input instance. 
+# This is because each neuron in the Dense layer is connected 
+# to every input value, and these connections are represented 
+# as a vector of weights.
+
+# Second layer is the dense layer where each neuron is connected
+# other layers, so it is called fully connected layer
+
+# Thirs is dropout used to avoid overfitting
+# 20% of the neurons will be randomly "dropped"
+# The dropout rate 0.2 means that 20% of the neurons 
+# in the layer where the Dropout is applied will be 
+# deactivated (ignored) in each forward pass during training.
+
+# The fourth layer is the output layer which has no activations
+# it will give 10 neurons as output each represents the probabilty
+# of the input belonging to a specific class
+
+model = tf.keras.models.Sequential([
+  tf.keras.layers.Flatten(input_shape=(28,28)),
+  tf.keras.layers.Dense(128, activation='relu'),
+  tf.keras.layers.Dropout(0.2),
+  tf.keras.layers.Dense(10)
+])
+
+# We want output of the model should ne probability that is 0 and 1 
+# for that from_logits=True is used here, it applies softmax function
+# internally to get the probabilities in 0's and 1's if it is false
+# the output will be in positive and negative integers.
+
+loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+
+# before trainig the model we have to compile the model
+# using compile, if we are not compile it then the TensorFlow 
+# won't know what loss function to 
+# minimize or which optimizer to use for updating the weights.
+# hence the fit() method for training the model will raises error.
+
+
+# In this model the loss_fn will be reduced using adam optim
+# The 'accuracy' metric computes the percentage of correct predictions 
+# out of all predictions.
+# During Training After each batch or epoch, TensorFlow 
+# calculates the specified metric(s) based on the predictions 
+# and true labels.
+# It provides feedback (e.g., accuracy) so you can monitor 
+# how well the model is learning.
+# Metrics are just for monitoring and are not used to compute 
+# gradients or update the model's weights. Only the loss function 
+# is used for optimization.
+
+model.compile(optimizer='adam', loss=loss_fn, metrics=['accuracy'])
+
+# Different Types of Metrics:
+
+# The metrics you specify depend on the type of problem you're solving:
+
+# For Classification Problems:
+
+# 'accuracy': Compares predicted labels to true labels.
+# 'sparse_categorical_accuracy': Similar to 'accuracy' but used when true labels are integers (e.g., [0, 1, 2]).
+# 'categorical_accuracy': Used when true labels are one-hot encoded (e.g., [[1,0,0], [0,1,0]]).
+# For Regression Problems:
+
+# 'mean_absolute_error' (MAE): Average of the absolute differences between predictions and true values.
+# 'mean_squared_error' (MSE): Average of the squared differences between predictions and true values.
+
+# Custom Metrics:
+
+# You can define your own metrics by writing a custom function. For example:
+# def custom_metric(y_true, y_pred):
+#     return tf.reduce_mean(tf.abs(y_true - y_pred))  # Example: MAE
+# 
+
+# model.compile(optimizer='adam', loss='mse', metrics=[custom_metric])
+
+# Why Use Metrics?
+# Training Monitoring: Metrics give you insights into how the model is performing during training (e.g., accuracy or loss trends).
+# Validation Performance: They help you compare the performance on the training and validation datasets to detect overfitting or underfitting.
+# Evaluation: After training, metrics show how well the model performs on unseen test data.
+# Example:
+# model.compile(
+#     optimizer='adam',
+#     loss='sparse_categorical_crossentropy',
+#     metrics=['accuracy', 'sparse_categorical_accuracy']
+# )
+# accuracy: General accuracy metric.
+# sparse_categorical_accuracy: Equivalent to accuracy when using integer labels (for datasets like MNIST).
+
+# x_train is the input data which typically consists of 
+# a set of features or images.
+# y_train These are the corresponding labels for the training data.
+# The model learns to associate the input data
+# x_train with these labels (y_train) during training.
+# An epoch is one complete pass through the entire training data set.
+# The epochs parameter specifies how many times the model will 
+# iterate over the entire data set during the training.
+
+model.fit(x_train, y_train, epochs=5)
+
+# Now the model is trained, we have to evaluate the
+# model by parsing the test data set to know
+# how it predicts the data
+
+model.evaluate(x_test,y_test, verbose=2)
+'''
+
+#       UNDERSTAND WHAT INPUT AND TARGET DATA MEANS
+'''
+ fit(input_data, target_labels) and evaluate(input_data, target_labels) gets this 
+ parameters, lets understand what they mean
+
+ fit learns features from input and learns what to predict with that 
+ feature with target
+
+ EXAMPLE:
+
+ For a simple regression model where you're predicting house prices:
+
+Input Data (Features): Information about houses (e.g., size, number of rooms).
+Target Data: Actual prices of those houses.
+When you run model.fit(), the model tries to learn the 
+relationship between the features (input data) and the target 
+(output label). It adjusts itself to minimize the prediction error.
+
+Process:
+
+The model sees an input (e.g., house size).
+It makes a prediction (e.g., predicted price).
+It compares that prediction with the actual price (target).
+The model adjusts its parameters to reduce the error, 
+and this process is repeated until the model is good at predicting.
+
+SUMMARY:
+
+Input Data: Features the model uses to make predictions.
+Target Data: Correct outputs the model aims to predict.
+fit(): Trains the model by learning the relationship between input and target data.
+
+
+ EVALUATE:
+
+ The evaluate() method is used to assess how well 
+ the trained model performs on unseen data, typically 
+ the test set (data that the model hasn't been trained on).
+
+ So the above sample code When you pass x_test to the model:
+
+ * The model applies the learned patterns (from training) to 
+   the new data in x_test.
+
+ * It uses the learned weights and biases (which were adjusted 
+   during training) to generate predictions.
+
+ * During evaluation (via evaluate()), the model is not 
+   learning from the test data; it is simply making predictions 
+   and comparing them to the actual values (y_test)
+
+ * The model compares its predictions with these actual house prices which is
+   on y_test to calculate the loss or error.
+
+ * It calculates how far off its predictions are from the 
+   actual values (using a loss function like Mean Squared Error or Mean Absolute Error)
+   
+ * It calculates how far off its predictions are from 
+   the actual values (using a loss function like Mean Squared Error or Mean Absolute Error)
+   A lower loss means the model is more accurate.
+'''
+#     COMPLEX NEURAL NETWORK
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Flatten
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.utils import to_categorical
+
+# Load and preprocess the MNIST dataset
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
+
+# Normalize the images to a range of [0, 1]
+train_images = train_images / 255.0
+test_images = test_images / 255.0
+
+# Split validation data from the training data
+val_images = train_images[:10000]
+val_labels = train_labels[:10000]
+train_images = train_images[10000:]
+train_labels = train_labels[10000:]
+
+# One-hot encode the labels
+train_labels = to_categorical(train_labels)
+val_labels = to_categorical(val_labels)
+test_labels = to_categorical(test_labels)
+
+# Define the model
+model = Sequential([
+    Flatten(input_shape=(28, 28)),
+    Dense(128, activation='relu'),
+    Dense(10, activation='softmax')
+])
+
+# Compile the model
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# Display the model summary
+print(model.summary)
