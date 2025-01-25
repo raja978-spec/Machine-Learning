@@ -1,9 +1,9 @@
 #     PURPOSE OF CUSTOM MODEL
 '''
- Yolo has many objects that can be detected. But sometimes
- it will not have the object we want, lets say we want to
- detect a ambulance the yolo is not already pre-trained
- to detect it. Here the custom model plays role 
+ We can custom whatever object we want to detect in the image
+ For example, we can detect a car, a bus, a person, etc.
+
+ By default Yolo predicts all the possible objects in the image.
 '''
 
 #   FORMATING DATA TO BUILD CUSTOM MODEL
@@ -356,5 +356,92 @@ save_dir = Path("runs/detect/train")
 # the trade-off between precision (positive prediction accuracy) 
 # and recall (ability to detect all positive cases) at different classification thresholds.
 
+Image.open(save_dir/"PR_curve.png")
 
+# Another plot is confusion matrix that helps to
+# how our model getting confused in predictions to find correct class
+# and how it founds the class
+
+REFER About yolo(obj_classification).doc fot output
+
+# Another file will be also generated called results.csv 
+# that has the the values for three loss functions
+# errors for train and val dataset
+
+df = pd.read_csv(save_dir / "results.csv", skipinitialspace=True).set_index(
+    "epoch"
+)
+df.head()
+
+OUTPUT:
+
+epoch
+	time	train/box_loss	train/cls_loss	train/dfl_loss	metrics/precision(B)	metrics/recall(B)	metrics/mAP50(B)	metrics/mAP50-95(B)	val/box_loss	val/cls_loss	val/dfl_loss	lr/pg0	lr/pg1	lr/pg2
+														
+1	35.1072	1.45223	3.32406	1.16199	0.59554	0.11979	0.10365	0.06298	1.36083	2.15096	1.11174	0.000133	0.000133	0.000133
+2	67.5593	1.42356	2.24330	1.17132	0.67236	0.15496	0.13611	0.08650	1.33130	1.89784	1.10711	0.000257	0.000257	0.000257
+3	99.9395	1.38437	2.04035	1.16109	0.56155	0.18055	0.16316	0.10168	1.30970	1.70307	1.10191	0.000373	0.000373	0.000373
+4	131.5240	1.36695	1.91453	1.15004	0.60072	0.19290	0.17265	0.10846	1.28410	1.66555	1.08647	0.000360	0.000360	0.000360
+5	163.3040	1.32782	1.81436	1.12958	
+
+
+#Lets plot the classification loss over period for train and val
+
+# The `.plot` method on DataFrames may be useful.
+df[['train/cls_loss','val/cls_loss']].plot(marker='.')
+
+#Weights for last training epoch and 
+# best training performance epoch's weight loss are will be stored
+# in the path runs/detect/train/weights/best.pt
+#By load those best weight loss value we dont need
+# to train it again to get better result
+
+saved_model = YOLO(save_dir/'weights'/'best.pt')
+
+print(saved_model)
+
+# Lets make prediction on this saved model
+# we'll make prediction on the extracted frames frame_600 from the video
+
+predict_results = saved_model.predict(
+    "data_video/extracted_frames/frame_600.jpg",
+    # Only return objects detected at this confidence level or higher
+    conf=0.5,
+    # Save output to disk
+    save=True,
+)
+
+f"Results type: {type(predict_results)}, length {len(predict_results)}"
+
+# predict_results will give you the result which has confidence
+# in 50% that(conf=0.5) and saves the result on current dir
+
+OUTPUT:
+
+image 1/1 /app/data_video/extracted_frames/frame_600.jpg: 384x640 7 cars, 1 suv, 3 three wheelers (CNG)s, 60.8ms
+Speed: 2.5ms preprocess, 60.8ms inference, 206.7ms postprocess per image at shape (1, 3, 384, 640)
+Results saved to runs/detect/predict4
+"Results type: <class 'list'>, length 1"
+
+Here saved to runs/detect/predict4 is the saved path
+
+# The below code will give you the bounding boxes on the frame_600.jpg
+predict_results[0].boxes
+
+OUTPUT:
+ltralytics.engine.results.Boxes object with attributes:
+
+cls: tensor([ 5.,  5., 17.,  5., 17.,  5., 15., 17.,  5.,  5.,  5.], device='cuda:0')
+conf: tensor([0.9604, 0.9439, 0.9421, 0.8939, 0.7899, 0.7891, 0.7002, 
+id: None
+is_track: False
+orig_shape: (360, 640)
+shape: torch.Size([11, 6])
+xywh: tensor([[ 80.4396, 292.1061, 160.5392, 134.6830],
+        [36
+xywhn: tensor([[0.1257, 0.8114, 0.2508, 0.3741],
+    
+
+# Below code will opens the saved result
+Image.open(pathlib.Path(predict_results[0].save_dir) / "frame_600.jpg")
 '''
