@@ -382,6 +382,30 @@ plt.show()
 REFER face_embeding_with_resent.docx for output
 
 #Notice how we were able to recognize Mary Kom given our specified threshold!
+
+
+NOTE:     FOR plt.Rectangle ans axis.text
+
+# plt.Rectangle((x, y), width, height, fill=False, color="blue"):
+
+# Creates a rectangle using Matplotlib.
+# (box[0], box[1]) specifies the bottom-left corner of the rectangle (bounding box).
+# box[2] - box[0] is the width of the rectangle.
+# box[3] - box[1] is the height of the rectangle.
+# fill=False ensures the rectangle is just an outline.
+# color="blue" sets the rectangle color to blue.
+# axis.add_patch(rect):
+
+# Adds the rectangle (bounding box) to the plot (axis).
+
+# axis.text(x, y, text, fontsize="large", color=color):
+# Adds a text label at position (box[0], box[1]), which is the top-left of the bounding box.
+# label = f"{name} {dist:.2f}":
+# Combines the name and distance (formatted to 2 decimal places) as text.
+# fontsize="large": Makes the font size large.
+# color=color:
+# Red if the face is "Undetected".
+# Blue otherwise.
 '''
 
 # Inception-ResNet V1 on an Image With More Than One Person¶
@@ -459,4 +483,34 @@ recognize_faces(img_multiple_people_path, embedding_data, mtcnn, resnet)
 # threshold
 
 recognize_faces(img_multiple_people_path, embedding_data, mtcnn, resnet, 0.9)
+
+
+NOTE:   For Figure method in matplot lib
+
+In this code, fig = plt.figure(...) is used to create a new figure in 
+Matplotlib, which serves as the container for the entire plot.
+
+fig = plt.figure(figsize=(width / dpi, height / dpi), dpi=dpi)
+plt.figure(...):
+
+Creates a figure object (fig), which acts as a blank canvas where plots (images, charts, etc.) can be drawn.
+figsize=(width / dpi, height / dpi):
+
+Specifies the size of the figure in inches.
+Since width and height are in pixels, dividing them by dpi converts them into inches.
+This ensures that the figure maintains the correct resolution when displayed.
+dpi=dpi:
+
+DPI (Dots Per Inch) determines the resolution of the figure.
+A higher DPI results in a sharper image.
+How It Fits in the Code:
+The figure is created with the same dimensions as the image (sample_multiple).
+axis = fig.subplots():
+Adds a subplot (which is essentially an axis to plot data).
+axis.imshow(sample_multiple): Displays the original image on this axis.
+label_face(...): Draws a bounding box and labels on the detected face.
+Why Use a Figure?
+Ensures the image size matches the original.
+Provides a container for adding elements like the image, bounding boxes, and labels.
+Helps in fine-tuning resolution and layout.
 '''
