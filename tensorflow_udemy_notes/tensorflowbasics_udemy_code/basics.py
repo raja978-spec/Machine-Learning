@@ -314,7 +314,7 @@ OUTPUT:
  1. TensorFlow Graph - A TensorFlow graph or a computational graph is a data 
                        structure that represents a series of TensorFlow
                        operations(nodes) and flows of the data between
-                       then(edges)
+                       the(edges)
 
                        the default graph TensorFlow automatically creates a default
                        graph when you define operations.
@@ -994,11 +994,42 @@ fit(): Trains the model by learning the relationship between input and target da
    the actual values (using a loss function like Mean Squared Error or Mean Absolute Error)
    A lower loss means the model is more accurate.
 '''
-#     COMPLEX NEURAL NETWORK
+
+#          BUILDING CONVOLUTION NEURAL NETWORK IN TENSORFLOW KERAS
+
+'''
+
+These are considered as complex model, because it will have multiple
+input and output layers. 
+
+In the below code have two types of input layers, that are
+Conv2D, Dense
+
+We can create custom layers.
+
+We have to do model sub classing 
+
+
+OUTPUT:
+
+Epoch 1/5
+Epoch 3/5
+1563/1563 ━━━━━━━━━━━━━━━━━━━━ 14s 9ms/step - accuracy: 0.9918 - loss: 0.0271 - val_accuracy: 0.9875 - val_loss: 0.0405
+Epoch 4/5
+1563/1563 ━━━━━━━━━━━━━━━━━━━━ 14s 9ms/step - accuracy: 0.9938 - loss: 0.0191 - val_accuracy: 0.9864 - val_loss: 0.0567
+Epoch 5/5
+1563/1563 ━━━━━━━━━━━━━━━━━━━━ 14s 9ms/step - accuracy: 0.9960 - loss: 0.0119 - val_accuracy: 0.9879 - val_loss: 0.0444
+313/313 ━━━━━━━━━━━━━━━━━━━━ 1s 4ms/step - accuracy: 0.9864 - loss: 0.0482 (evalivation phase)
+* 0.03873628377914429
+* 0.9891999959945679
+
+'''
+
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Flatten
+from tensorflow.keras.layers import Dense, Flatten, MaxPooling2D, Conv2D
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
+import matplotlib.pyplot as plt
 
 # Load and preprocess the MNIST dataset
 (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
@@ -1020,7 +1051,11 @@ test_labels = to_categorical(test_labels)
 
 # Define the model
 model = Sequential([
-    Flatten(input_shape=(28, 28)),
+    Conv2D(32, kernel_size=(3,3), activation='relu', input_shape=(28,28,1)),
+    MaxPooling2D(pool_size=(2,2)),
+    Conv2D(64, kernel_size=(3,3), activation='relu'),
+    MaxPooling2D(pool_size=(2,2)),
+    Flatten(),
     Dense(128, activation='relu'),
     Dense(10, activation='softmax')
 ])
@@ -1030,3 +1065,10 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 
 # Display the model summary
 print(model.summary)
+
+history = model.fit(train_images,train_labels, epochs=5, batch_size=32, validation_data=(val_images, val_labels))
+
+test_loss , test_accuracy = model.evaluate(test_images,test_labels)
+print('*',test_loss)
+print('*',test_accuracy)
+
