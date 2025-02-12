@@ -1025,11 +1025,31 @@ Epoch 5/5
 
 '''
 
+
+#           STATERGIES IN CNN TRANSFORM LEARNING
+'''
+There are 2 statergies in CNN
+
+1. feature extraction - here the pre-trained model will be freezed
+                        and new small part of dense layer added to
+                        train the model for new task.
+
+2. Fine tuning -  pre-trained CNN model is used as an initialization 
+                  for training on the new dataset. So pre-trained
+                  model is not freezed here. This pre trained
+                  model will adapts with new features in new dataset.
+
+CHOSSING THE RIGHT PRE TRAINED MODEL:
+
+It depends on the size and nature of target label
+'''
+
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Flatten, MaxPooling2D, Conv2D
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
 import matplotlib.pyplot as plt
+import tensorflow as tf
 
 # Load and preprocess the MNIST dataset
 (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
@@ -1049,6 +1069,23 @@ train_labels = to_categorical(train_labels)
 val_labels = to_categorical(val_labels)
 test_labels = to_categorical(test_labels)
 
+# Load pre-trained model
+base_model = tf.keras.applications.VGG16(weights='imagenet', include_top=False, input_shape=(224,224,3))
+
+# Feature extraction
+base_model.trainable = False # Freeze the pre-trained model
+model = Sequential([
+    base_model,
+    Flatten(),
+    Dense(256, activation='relu'),
+    Dense(10, activation = 'softmax')
+])
+
+base_model.trainable = True
+fine_tune_at = 120 # specifies lower training rate on pre-trained model
+for layer in base_model.layers[:fine_tune_at]:
+    layer.trainable = False
+
 # Define the model
 model = Sequential([
     Conv2D(32, kernel_size=(3,3), activation='relu', input_shape=(28,28,1)),
@@ -1061,7 +1098,7 @@ model = Sequential([
 ])
 
 # Compile the model
-model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+model.compile(optiSmizer='adam', loss='spares_categorical_crossentropy', metrics=['accuracy'])
 
 # Display the model summary
 print(model.summary)
