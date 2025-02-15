@@ -1042,7 +1042,6 @@ There are 2 statergies in CNN
 CHOSSING THE RIGHT PRE TRAINED MODEL:
 
 It depends on the size and nature of target label
-'''
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Flatten, MaxPooling2D, Conv2D
@@ -1109,3 +1108,133 @@ test_loss , test_accuracy = model.evaluate(test_images,test_labels)
 print('*',test_loss)
 print('*',test_accuracy)
 
+
+'''
+
+#                  WHAT IS RNN
+'''
+Works well on sequential based data like text recognization, It has
+hidden state which stores the previous input until the current input
+is arrived.
+
+The gradient which are going to find on this model will be too small
+so the training non linearity will raise here, to avoid such sutivation
+LSTM (long short time memory) and GRU (Gated Recurrent Unit) are used here.
+
+LSTM It uses a memory cell with gates (input, forget, and output gates) 
+to control the flow of information.
+
+
+GRU has two gates (reset and update gates) instead of three.
+
+When to Use:
+
+Use LSTM when you need to remember long sequences 
+(e.g., speech recognition, time-series forecasting).
+
+Time Series prediction like weather prediction.
+
+Use GRU when you need a faster and less complex model.
+
+Refer rnn.docx for more
+'''
+
+#             BUILDING RZZ MODEL IN TENSORFLOW
+
+'''
+ SimpleRNN(64, input_shape=(sequence_length,input_dim))
+
+ this is the syntax for LSTM, GRU
+
+ EXAMPLE FOR BOTH SIMPLERNN AND LSTM
+
+ from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, SimpleRNN, LSTM
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.utils import to_categorical
+import matplotlib.pyplot as plt
+import tensorflow as tf
+
+# Load and preprocess the MNIST dataset
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
+
+# Normalize the images to a range of [0, 1]
+train_images = train_images / 255.0
+test_images = test_images / 255.0
+
+# Split validation data from the training data
+val_images = train_images[:10000]
+val_labels = train_labels[:10000]
+train_images = train_images[10000:]
+train_labels = train_labels[10000:]
+
+# One-hot encode the labels
+train_labels = to_categorical(train_labels)
+val_labels = to_categorical(val_labels)
+test_labels = to_categorical(test_labels)
+
+# Define the model
+model = Sequential([
+    LSTM(64, input_shape=(28, 28)),  # Fixed input shape
+    Dense(10, activation='softmax')
+])
+
+# Compile the model
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])  # Fixed loss function
+
+# Display the model summary
+model.summary()  # Fixed function call
+
+# Train the model
+history = model.fit(train_images, train_labels, epochs=2, batch_size=32, validation_data=(val_images, val_labels))
+
+# Evaluate the model
+test_loss, test_accuracy = model.evaluate(test_images, test_labels)
+print('* Test Loss:', test_loss)
+print('* Test Accuracy:', test_accuracy)
+
+'''
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, SimpleRNN, LSTM
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.utils import to_categorical
+import matplotlib.pyplot as plt
+import tensorflow as tf
+
+# Load and preprocess the MNIST dataset
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
+
+# Normalize the images to a range of [0, 1]
+train_images = train_images / 255.0
+test_images = test_images / 255.0
+
+# Split validation data from the training data
+val_images = train_images[:10000]
+val_labels = train_labels[:10000]
+train_images = train_images[10000:]
+train_labels = train_labels[10000:]
+
+# One-hot encode the labels
+train_labels = to_categorical(train_labels)
+val_labels = to_categorical(val_labels)
+test_labels = to_categorical(test_labels)
+
+# Define the model
+model = Sequential([
+    LSTM(64, input_shape=(28, 28)),  # Fixed input shape
+    Dense(10, activation='softmax')
+])
+
+# Compile the model
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])  # Fixed loss function
+
+# Display the model summary
+model.summary()  # Fixed function call
+
+# Train the model
+history = model.fit(train_images, train_labels, epochs=2, batch_size=32, validation_data=(val_images, val_labels))
+
+# Evaluate the model
+test_loss, test_accuracy = model.evaluate(test_images, test_labels)
+print('* Test Loss:', test_loss)
+print('* Test Accuracy:', test_accuracy)
