@@ -3,3 +3,4 @@ env/
 .venv/
 tensorflow_udemy_notes/tensorflowbasics_udemy_code/mytensorenv
 pytorch_udemycourse_notes/pytorchvenv
+machine_learning_basics/mlvenv

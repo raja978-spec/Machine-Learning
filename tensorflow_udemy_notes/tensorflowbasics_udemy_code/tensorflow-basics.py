@@ -1,3 +1,16 @@
+#                   WHEN TO USE TENSORFLOW
+'''
+When working with deep learning (e.g., image classification, NLP, reinforcement learning).
+When you need GPU acceleration for training large models.
+When you need flexibility in model design (custom layers, loss functions, etc.).
+
+For simple problems like fruit classification, scikit-learn is enough. 
+But if you were training a deep learning model on a large dataset 
+(e.g., images of fruits instead of just numbers), PyTorch/TensorFlow would be 
+the right choice.
+'''
+
+
 #                   SIMPLE TENSOR CODE
 '''
 import tensorflow as tf
@@ -1194,6 +1207,27 @@ print('* Test Loss:', test_loss)
 print('* Test Accuracy:', test_accuracy)
 
 '''
+
+
+#              DEPLOYING TENSORFLOW MODELS(Save Load)
+'''
+ While saving a trained model the parameters used for weights, optimizer
+ and its architecture  are
+ stored, multiples ways are available for saving the model.
+
+ model.save('filename.h5) # stores all info
+
+ For saving model and architecture on different file we can use json
+ format
+
+ with open('model.json', 'w') as file:
+    file.write(model.to_json())
+
+model.save_weights('model.weights.h5')
+
+
+EX:
+
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, SimpleRNN, LSTM
 from tensorflow.keras.datasets import mnist
@@ -1219,22 +1253,80 @@ train_labels = to_categorical(train_labels)
 val_labels = to_categorical(val_labels)
 test_labels = to_categorical(test_labels)
 
-# Define the model
 model = Sequential([
     LSTM(64, input_shape=(28, 28)),  # Fixed input shape
     Dense(10, activation='softmax')
 ])
 
-# Compile the model
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])  # Fixed loss function
-
-# Display the model summary
-model.summary()  # Fixed function call
-
-# Train the model
 history = model.fit(train_images, train_labels, epochs=2, batch_size=32, validation_data=(val_images, val_labels))
 
-# Evaluate the model
-test_loss, test_accuracy = model.evaluate(test_images, test_labels)
-print('* Test Loss:', test_loss)
-print('* Test Accuracy:', test_accuracy)
+model.save('model.h5')
+
+with open('model.json', 'w') as file:
+    file.write(model.to_json())
+
+model.save_weights('model.weights.h5')
+
+
+
+
+                    LOAD SAVED MODEL
+
+from tensorflow.keras.models import load_model, model_from_json
+
+# Load model from HDF5 file (architecture + weights)
+loaded_model = load_model('model.h5')
+
+# Load architecture from JSON file
+with open('model.json', 'r') as file:
+    loaded_model_json = file.read()
+
+lm = model_from_json(loaded_model_json)
+
+# # Load weights separately
+# lm.load_weights('model_weights.h5')  # Ensure this file exists
+
+print(lm.summary())  # Print model summary
+
+
+OUTPUT:
+
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓    
+┃ Layer (type)                     ┃ Output Shape            ┃       Param # ┃    
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩    
+│ lstm (LSTM)                      │ (None, 64)              │        23,808 │    
+├──────────────────────────────────┼─────────────────────────┼───────────────┤    
+│ dense (Dense)                    │ (None, 10)              │           650 │    
+└──────────────────────────────────┴─────────────────────────┴───────────────┘    
+ Total params: 48,918 (191.09 KB)
+ Trainable params: 24,458 (95.54 KB)
+ Non-trainable params: 0 (0.00 B)
+ Optimizer params: 24,460 (95.55 KB)
+
+NOTE: Model saved in one version will not be worked on other
+      newer version of model. Based on deploy environment we have
+      save the model in correct format, like hdf5, json
+
+
+                WHAT IS h5 AND WHY MODEL ARE SAVED IN THA FORMAT
+
+The .h5 (HDF5) format is used in TensorFlow/Keras for saving deep learning models because it is efficient and structured.
+
+What is HDF5 (.h5)?
+HDF5 (Hierarchical Data Format version 5) is a binary data format designed to store large amounts of data efficiently. It supports:
+✅ Structured data storage (like a file system inside a file)
+✅ Compression (reduces file size without losing information)
+✅ Fast read/write access
+✅ Support for large datasets
+
+Why is .h5 used for saving models?
+Stores everything in a single file:
+
+Model architecture
+Model weights
+Training configuration (loss, optimizer, metrics)
+Optimizer state (for resuming training)
+
+'''

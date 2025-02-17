@@ -1,3 +1,15 @@
+#                   WHEN TO USE PYTORCH
+'''
+When working with deep learning (e.g., image classification, NLP, reinforcement learning).
+When you need GPU acceleration for training large models.
+When you need flexibility in model design (custom layers, loss functions, etc.).
+
+For simple problems like fruit classification, scikit-learn is enough. 
+But if you were training a deep learning model on a large dataset 
+(e.g., images of fruits instead of just numbers), PyTorch/TensorFlow would be 
+the right choice.
+'''
+
 #            CUDA
 '''
  
@@ -249,55 +261,100 @@ updates the model parameters based on computed gradient.
             direction.
 
 
-                    Example neural network with pytorch
+                               Example neural network with pytorch
 
+                    
 torch.nn.Module is the class helps to create neurons
 
 import torch
 import torch.nn as nn
+import torch.optim as optim
 
-class SimpleNeuralNetwork(nn.Module): # All neuron should inherit this class
-    # with this constructor
+# Step 1: Prepare the data (Features and Labels)
+X_train = torch.tensor([[150, 0], [130, 0], [180, 1], [170, 1]], dtype=torch.float32)  # Features
+y_train = torch.tensor([0, 0, 1, 1], dtype=torch.long)  # Labels (0 = Apple, 1 = Orange)
+
+# Step 2: Define a simple Neural Network model
+class FruitClassifier(nn.Module):
     def __init__(self):
-        super(SimpleNeuralNetwork, self).__init__()
-        self.n1 = nn.Linear(10, 50)
-        self.n2 = nn.Linear(50, 1)
+        super(FruitClassifier, self).__init__()
+        self.layer = nn.Linear(2, 2)  # Input: 2 features, Output: 2 classes (Apple, Orange)
 
-    # All neurons will have this type of forward function
-    # to move its input
     def forward(self, x):
-        x = torch.relu(self.n1(x)) # activates function after the 1st neuron
-        x = self.n2(x)
-        return x
-    
-model = SimpleNeuralNetwork()
-input_data = torch.randn(1, 10)
-output = model(input_data)
-print(output)
+        return self.layer(x)
 
-OUTPUT:
+# Step 3: Initialize the model, loss function, and optimizer
+model = FruitClassifier()
+loss_function = nn.CrossEntropyLoss()  # For classification
+optimizer = optim.SGD(model.parameters(), lr=0.01)
 
-tensor([[0.2127]], grad_fn=<AddmmBackward0>)
+# Step 4: Train the model
+epochs = 100
+for epoch in range(epochs):
+    optimizer.zero_grad()  # Clear gradients
+    output = model(X_train)  # Forward pass
+    loss = loss_function(output, y_train)  # Compute loss
+    loss.backward()  # Backpropagation
+    optimizer.step()  # Update weights
+
+# Step 5: Make a prediction on new data
+X_test = torch.tensor([[160, 1]], dtype=torch.float32)  # New fruit: 160g, rough texture
+prediction = model(X_test)
+predicted_class = torch.argmax(prediction).item()  # Get the class with the highest score
+
+print("Predicted:", "Apple 🍏" if predicted_class == 0 else "Orange 🍊")
+
+
+                                 Diagrammatic Explanation of the Training Process in PyTorch
+
+The training loop consists of multiple steps that help the neural network learn from 
+the data. Below is a visual breakdown of each step.
+
+Step 1: Forward Pass
+🔹 Inputs (X_train) pass through the model to generate predictions (output).
+🔹 Neurons apply weights and biases, followed by an activation function.
+
+[ X_train ]  --->  [ Layer (Weights & Biases) ]  --->  [ Output (Predictions) ]
+
+
+Step 2: Compute Loss
+🔹 Compare the predicted output (output) with the actual labels (y_train).
+🔹 Calculate the loss using loss_function.
+
+
+Prediction (output) vs. Actual (y_train)
+       ↓
+    Compute Loss
+       ↓
+  Loss Function (CrossEntropyLoss)
+
+
+Step 3: Backpropagation
+🔹 Calculate the gradients of the loss with respect to weights using loss.backward().
+🔹 This step helps in finding which weights contributed to the error.
+
+
+      Loss
+       ↓
+ Backpropagation
+       ↓
+Calculate Gradients (dL/dW)
+
+Step 4: Optimizer Step (Weight Update)
+🔹 The optimizer (optimizer.step()) updates the weights based on gradients.
+🔹 Gradients are scaled using the learning rate to adjust model parameters.
+
+New Weight = Old Weight - Learning Rate * Gradient
+
+
+Step 5: Clear Gradients
+🔹 Before the next iteration, we reset gradients using optimizer.zero_grad() to avoid accumulation.
+
+Reset Gradients to Zero → Prevent accumulation from previous iterations
+📌 Overall Flow of One Epoch
+
+1. Forward Pass  --->  2. Compute Loss  --->  3. Backpropagation  --->  4. Update Weights  --->  5. Clear Gradients
+
+This process repeats for multiple epochs (e.g., 100 times) to improve model accuracy. 🚀
+
 '''
-import torch
-import torch.nn as nn
-
-class SimpleNeuralNetwork(nn.Module): # All neuron should inherit this class
-    # with this constructor
-    def __init__(self):
-        super(SimpleNeuralNetwork, self).__init__()
-        self.n1 = nn.Linear(10, 50)
-        self.n2 = nn.Linear(50, 1)
-
-    # All neurons will have this type of forward function
-    # to move its input
-    def forward(self, x):
-        print
-        x = torch.relu(self.n1(x)) # activates function after the 1st neuron
-        x = self.n2(x)
-        return x
-    
-model = SimpleNeuralNetwork()
-input_data = torch.randn(1, 10)
-output = model(input_data)
-print(output)
