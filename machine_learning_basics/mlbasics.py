@@ -128,6 +128,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.tree import DecisionTreeRegressor
 
+# In the below data set we uses area of the house which is 
+# only one variable
+# to predict house price, so it is considered as
+# simple linear regression.
 df = pd.read_csv('dataset/homeprices.csv')
 
 plt.title('House price prediction')
@@ -137,7 +141,7 @@ plt.scatter(df[['Area']], df['Price'], marker='+', edgecolors='red')
 #plt.show()
 
 model = DecisionTreeRegressor()
-model.fit(df[['Area']], df.Price)
+model.fit(df[['Area']] , df.Price)
 
 print(df)
 size = 3300
@@ -146,6 +150,75 @@ print('predicted price for', size, 'is', price_predict)
 
 
    * Multiple linear regression - more than one input variables used
+                                  REFER multi linear regression.docx for more
+
+   
+   EX:
+
+In the below data set we are going to a price with multiple
+variables
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.linear_model import LinearRegression
+
+dataset = pd.read_csv('dataset/50_Startups.csv')
+
+
+x = dataset.iloc[:,:-1] # Taking all columns without profit column
+y = dataset.iloc[:,-1].values # profit column values.
+
+# it is easy to predict if all the data in dataset
+# are in numerical value, but the column state
+# having categorical data that, so we have to do
+# transform cat to num using 
+# one hot encoding(this means changing the categorical
+# data to numeric)
+# in below code 'encoder' - is the name of the transformer
+# OneHotEncoder - the transform function , [3] index of the column
+# where want to do one hot encode, in our case state is in 3rd
+# index. remainder will applied on other unspecified columns
+# without remainder ct will drops
+# all other columns, but in out case we want all columns
+ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(),[3])], remainder='passthrough')
+
+x = np.array(ct.fit_transform(x))
+
+train_feature, test_feature, train_label, test_label = train_test_split(x,y, test_size=0.2)
+
+model = LinearRegression()
+model.fit(train_feature, train_label)
+
+predicted_label_price = model.predict(test_feature)
+
+model_prediction_df = pd.DataFrame({'Actual Price': test_label, 
+                                    'Predicted Price': 
+                                    pd.Series(predicted_label_price)})
+
+                                
+             EVALUATE MODEL PERFORMANCE
+
+All these are used in continuos output variable EX: 1,3,8
+used in regression
+
+ 1. Mean Absolute Error - 1. subtract predicted value with actual value
+                          2. sum all the subtracted values / total value - mean
+                          3. abs(sum)
+
+ 2. Mean Square Error - we squares the means
+
+ 3. Root mean squared error 
+
+ EX:
+
+from sklearn import metrics
+print(np.sqrt(metrics.mean_squared_error(test_label, predicted_label_price)))
+
+
 
 2. Non linear regression - Non linear combination of input like (curve)
 
@@ -153,5 +226,6 @@ print('predicted price for', size, 'is', price_predict)
                      How simple linear regression works
 
         Refer simple linear regression.docx
-'''
 
+
+'''

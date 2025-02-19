@@ -779,7 +779,7 @@ custom_optimizer = CustomOptimizer(learning_rate=0.01)
 print(custom_optimizer)
 '''
 
-#  BUILD MODEL USING KERAS API
+#                      BUILD MODEL USING KERAS API
 '''
  * Working on the top of tensorflow
  * Has modular approach to develop the model 
@@ -1115,6 +1115,11 @@ model.compile(optiSmizer='adam', loss='spares_categorical_crossentropy', metrics
 # Display the model summary
 print(model.summary)
 
+# here validation_data are used to see is the model is
+# trained with overfitting, if it happens it does the
+# early stopping(stops model training when loss increase 
+# predict rate decreased) thing. so validation_data is
+# used to avoid overfitting.
 history = model.fit(train_images,train_labels, epochs=5, batch_size=32, validation_data=(val_images, val_labels))
 
 test_loss , test_accuracy = model.evaluate(test_images,test_labels)

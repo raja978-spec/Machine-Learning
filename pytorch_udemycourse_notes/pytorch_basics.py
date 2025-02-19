@@ -305,7 +305,7 @@ predicted_class = torch.argmax(prediction).item()  # Get the class with the high
 print("Predicted:", "Apple 🍏" if predicted_class == 0 else "Orange 🍊")
 
 
-                                 Diagrammatic Explanation of the Training Process in PyTorch
+      Diagrammatic Explanation of the Training Process in PyTorch
 
 The training loop consists of multiple steps that help the neural network learn from 
 the data. Below is a visual breakdown of each step.
