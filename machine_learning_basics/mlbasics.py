@@ -122,6 +122,10 @@ prices for new houses.
    * Simple linear regression - only single input variable used 
                                 to predict output
 
+            How simple linear regression works
+
+        Refer simple linear regression.docx
+
 EX:
 
 import pandas as pd
@@ -223,9 +227,122 @@ print(np.sqrt(metrics.mean_squared_error(test_label, predicted_label_price)))
 2. Non linear regression - Non linear combination of input like (curve)
 
 
-                     How simple linear regression works
+  * Polynomial Regression - not all of the model's data fit into linear
+                            straight line, some model's data will be 
+                            fully fit in slightly curved line,
 
-        Refer simple linear regression.docx
+                            So this is used to fit curved line model's
+                            data
+
+                            It is basically used where we can't apply
+                            simple and multi linear regression.
+
+                            FORMULA: 
+                            REFER: ploynomical.docx for image
+
+ 
+                            
+                HOW POLYNOMIAL REGRESSION IMPLEMENTED
+
+The formula for polynomial regression is 
+
+for degree 2 y = b0 + b1x + b2x**2
+
+for degree 3 y = b0 + b1x + b2x**2 + b3x**3 .... +bnx**n
 
 
+Sample data set
+
+x_experience = [1,2,3,4,5,6]
+y_salary = [367,654,754,865,2444,3344]
+
+consider b is the x_exprience from the formula, we have only b0 now
+so we have to find b1,b2,b3, upto bn, that is the done by 
+
+
+                          EXAMPLE:
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+
+# Given dataset
+x_experience = np.array([1, 2, 3, 4, 5, 6]).reshape(-1, 1)  #sklearn expectes 2d array
+                                                            #that is why shape it transformed
+y_salary = np.array([367, 654, 754, 865, 2444, 3344])
+
+
+poly = PolynomialFeatures(degree=2)
+x_poly = poly.fit_transform(x_experience) # change x into x,x**2, x**3
+                                          # which is b0, b1, b2....
+
+
+model = LinearRegression()
+model.fit(x_poly, y_salary) #pass the x_poly
+
+# Predict for smooth curve
+x_test = np.linspace(1, 6, 100).reshape(-1, 1)  # Generate smooth X values
+x_test_poly = poly.transform(x_test)
+y_pred = model.predict(x_test_poly)
+
+
+plt.figure(figsize=(6,6))
+
+plt.title('Normal plot')
+plt.scatter(x_experience, y_salary)
+
+plt.title('Polynomial plot')
+plt.plot(x_test, y_pred, color='red')
+
+plt.tight_layout()
+plt.show()      
+'''
+
+#                   CLASSIFICATION
+'''
+ Classification in Machine Learning (ML) is a supervised learning 
+ technique used to categorize data into predefined labels or 
+ classes. The model learns from labeled training data and 
+ then predicts the class of new, unseen data.
+
+ TYPES OF CLASSIFICATION
+
+ 1. Binary classification - two possible class (spam or not)
+                            a  model is trained to classify spam or not
+                            spam
+
+ 2. Multi-class classification - More than two class (dog, cat, people)
+                                 a model is trained to recognize 
+                                 in given image either it is dog or cat
+
+                                 It gives only one label at a time
+
+                                 If a image contain both dog or cat
+                                 it gives recognize any one from that
+                                 image at a time
+
+ 3. Multi-label classification - A model trained with this will give you
+                                 more than one class at a time,
+
+                                 It will recognize both cat and dog in 
+                                 the given image at the same time.
+
+
+Common Classification Algorithms
+
+Logistic Regression
+Decision Trees
+Random Forest
+Support Vector Machine (SVM)
+K-Nearest Neighbors (KNN)
+Naïve Bayes
+Neural Networks (Deep Learning)
+
+Example Use Cases
+
+Email spam detection (spam vs. not spam)
+Sentiment analysis (positive, neutral, negative)
+Medical diagnosis (disease classification)
+Image recognition (object detection)
 '''
