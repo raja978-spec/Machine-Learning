@@ -297,8 +297,94 @@ plt.plot(x_test, y_pred, color='red')
 
 plt.tight_layout()
 plt.show()      
+
+
+     * Ridge Regression - It is regularization technique(in regularization
+                          we will eliminate some parts of the data to
+                          fit the correct data to train model.)
+
+                          It is also like linear regression that finds
+                          best fit straight line on data to train model
+                          well but the only difference is it adds
+                          penalty to train the model with non-overfitted
+                          data, that is called L2 regularization.
+
+EX:
+
+Below code has simple dataset which doesn't have overfit, but use this
+ridge when train accuracy is greater than test accuracy.
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import Ridge, LinearRegression
+from sklearn.metrics import mean_absolute_error
+from sklearn.model_selection import train_test_split
+import pandas as pd
+
+# Generating some fake data (house sizes and prices)
+np.random.seed(42)
+X = 2 * np.random.rand(100, 1)  # House size in 100s of square feet
+y = 4 + 3 * X + np.random.randn(100, 1)  # House price with some noise
+# print(X[:5])
+# print()
+# print(y[:5])
+
+# OUTPUT:
+# [[0.74908024]
+#  [1.90142861]
+#  [1.46398788]
+#  [1.19731697]
+#  [0.31203728]]
+
+# [[6.33428778]
+#  [9.40527849]
+#  [8.48372443]
+#  [5.60438199]
+#  [4.71643995]]
+
+train_feature, test_feature, train_label, test_label = train_test_split(X, y, test_size=0.2) 
+
+model = Ridge(alpha=1) # alpha is helps to adjust the penalty added on data
+model.fit(train_feature, train_label)
+
+prediction = model.predict(test_feature)
+train_prediction = model.predict(train_feature)
+
+train_accuracy = mean_absolute_error(train_label, train_prediction)
+t_accuracy = mean_absolute_error(test_label, prediction)
+print(f'{t_accuracy} ,{train_accuracy}')
+
+# OUTPUT:
+# 0.8740090373056704 ,0.6376585421842711
+
+# Model is will fitted now
+
+* Lasso Regression – Uses L1 regularization to shrink less 
+                     important features' coefficients to zero.
+
+* Elastic Net Regression – Combines both L1 (Lasso) and L2 (Ridge) 
+                         regularization.
+
+* Logistic Regression – Used for classification, but conceptually 
+                        similar to regression.
 '''
 
+
+#                   OVERFITTING, VARIANCE AND REGULARIZATION
+'''
+ When train accuracy is hight and test accuracy is low overfitting will
+ occurred, the are fitted while training, but while we trying to see
+ the prediction accuracy on test data there will be a variance
+ occur in prediction, this is called the variance.
+ This problem can be solved by regularization technique
+
+ In regularization we will eliminate some parts of the data to
+ fit the correct data to train model.
+
+ REFER regularization.docx For image
+
+
+'''
 #                   CLASSIFICATION
 '''
  Classification in Machine Learning (ML) is a supervised learning 

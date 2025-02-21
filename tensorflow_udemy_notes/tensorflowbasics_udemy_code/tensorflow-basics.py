@@ -1039,7 +1039,7 @@ Epoch 5/5
 '''
 
 
-#           STATERGIES IN CNN TRANSFORM LEARNING
+#          STATERGIES IN CNN TRANSFORM LEARNING
 '''
 There are 2 statergies in CNN
 
@@ -1334,4 +1334,77 @@ Model weights
 Training configuration (loss, optimizer, metrics)
 Optimizer state (for resuming training)
 
+'''
+
+#                   SERVING MODEL FOR DEPLOYMENT
+'''
+ It provides model monitoring, scalability on deployed environment, and it
+ is a tool which will used to deploy model in online
+
+ Refer: deploy_model_with_serving.docs for steps to deploy
+'''
+
+#           TENSORFLOW LIGHT FOR MOBILE AND EMBEDDED DEVICES
+'''
+ Used for deploying model for mobile devices, it supports
+ various platform. Andriod, windows, linux, raspberry pi
+
+
+NOTE: below code not working
+
+import tensorflow as tf
+
+# Load the Keras model
+model = tf.keras.models.load_model(r"C:\Users\ADMIN\Documents\ML\model.h5")
+
+# Convert the model to TensorFlow Lite format
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+tflite_model = converter.convert()
+
+# Save the converted model
+with open("model.tflite", "wb") as f:
+    f.write(tflite_model)
+
+print("TFLite model saved successfully.")
+
+
+                   TENSORFLOW LITE INTERPRETER
+
+To use the deployed model on mobile it is useful. This
+interpreter give c++ and java api for mobile apps
+
+import numpy as np
+import tensorflow as tf
+
+# Load the TensorFlow Lite model
+interpreter = tf.lite.Interpreter(model_path="model.tflite")
+interpreter.allocate_tensors()
+
+# Get input and output tensors
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
+
+# Prepare input data
+input_data = np.array([[1.0, 2.0, 3.0, 4.0]], dtype=np.float32)
+interpreter.set_tensor(input_details[0]['index'], input_data)
+
+# Run inference
+interpreter.invoke()
+
+# Get output data
+output_data = interpreter.get_tensor(output_details[0]['index'])
+print("Output:", output_data)
+
+
+             MODEL OPTIMIZATION TECHNICS
+
+1. Quantization - reducing model to more speed
+2. Model pruning - remove redundant or less important weights
+                   from model without affecting the accuracy.
+3. Operator fusing - combines multiple operation into single
+                     to reduce the size of the model
+4. Selective Execution - execute model based on device capability.
+
+Once you did this your model is ready to deploy for
+mobile, IOT device use. 
 '''

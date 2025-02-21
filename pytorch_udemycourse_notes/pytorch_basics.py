@@ -358,3 +358,248 @@ Reset Gradients to Zero → Prevent accumulation from previous iterations
 This process repeats for multiple epochs (e.g., 100 times) to improve model accuracy. 🚀
 
 '''
+
+#            LOADING AND PREPROCESSING DATA IN PYTORCH
+'''
+ pytorch provides various pre processing techniques that used to 
+ give correct data to the model without any noise.
+
+ we'll work with torchvision.dataset and torch.utils.Dataset 
+ to pre processing
+
+ torchvision.dataset - for standard dataset
+ torch.utils.Dataset - custom data set
+
+ ToTensor from transforms one of the data pre processing function helps
+ to change images to tensor and normalization etc.
+
+
+ EX:
+
+import torchvision.datasets as dataset
+from torchvision.transforms import ToTensor
+
+minst_train = dataset.MNIST(root='data', train=True, transform=ToTensor(), download=True)
+minst_test = dataset.MNIST(root='data', train=False, transform=ToTensor(), download=True)
+
+
+        EXAMPLE FOR CUSTOM DATASET
+
+
+This are often used to load data from different sources.
+
+from torchvision.transforms import ToTensor
+from torch.utils.data import Dataset
+import numpy as np
+
+class CustomDataSet(Dataset):
+    def __init__(self, data, labels, transform=None):
+        self.data = data
+        self.labels = labels
+        self.transform = transform
+    
+    def __len__(self):
+        return len(self.data)
+    
+    def __getitem__(self, index):
+        sample = self.data[index]
+        label = self.labels[index]
+
+        if(self.transform):
+            sample = self.transform(sample)
+        return sample, label
+
+data = CustomDataSet(np.ndarray([1,1,2,5]),np.ndarray([0,2,3,1]),ToTensor())
+print(data.__getitem__(0))
+
+
+                 EXAMPLE FOR NORMALIZATION
+
+use of this normalize is to scaling the input data to given range
+
+EX:
+
+from torchvision.transforms import Normalize
+import torch
+
+# Define a sample tensor (grayscale image with one channel)
+x = torch.tensor([[[1, 3, 3], [5, 3, 3], [4, 6, 3]]], dtype=torch.float32)
+
+
+# Define normalization
+normalize = Normalize(mean=[0.5], std=[0.5])
+
+# Apply normalization
+x = normalize(x)
+
+
+print(x)# new_value = each_tensor_value - mean / std
+
+OUTPUT:
+tensor([[[ 1.,  5.,  5.],
+         [ 9.,  5.,  5.],
+         [ 7., 11.,  5.]]])
+
+
+                  EXAMPLE FOR IMAGE NORMALIZATION
+
+from torchvision.transforms import Normalize, ToTensor, Resize, Compose, RandomHorizontalFlip
+import torch
+
+# transform for image
+transforms = Compose([
+    Resize((28,28)),
+    ToTensor(),
+    RandomHorizontalFlip()
+])
+
+
+                       EXAMPLE FOR DATALOADER
+
+Helps to load data in batch manner, shuffles data, allows parallel loading
+Improve efficiency of training with large data
+
+Large no of data are getting into splitted in different specified batch
+with batch_size attribute.
+
+If your system have more than one GPU then the training data will be
+parallely loaded to all GPU devices to speeding up the training process
+of the model. For this num_worker in dataloader are used.
+
+from torchvision.transforms import Normalize, ToTensor, Resize, Compose, RandomHorizontalFlip
+from torch.utils.data import Dataset, DataLoader
+import os
+import PIL
+
+class ImageDataset(Dataset):
+    def __init__(self, image_dir, transform):
+        self.image_dir = image_dir
+        self.image_files = os.listdir(image_dir)
+        self.transform = transform
+    
+    def __len__(self):
+        self.size = len(self.image_files)
+
+    def __getitem__(self, index):
+        image = self.image_files[index]
+        if(self.transform):
+            image_path = os.path.join(self.image_dir,image)
+            self.transform(image_path)
+            PIL.Image.open(image_path)
+
+
+# transform for image
+ImageTransforms = Compose([
+    Resize((28,28)),
+    ToTensor(),
+    RandomHorizontalFlip()
+])
+
+custom_data = ImageDataset(image_dir='path to image', transform=ImageTransforms)
+
+# num_worker for parallel loading
+data = DataLoader(custom_data, batch_size=32, shuffle=True, num_worker=3)
+
+
+
+                ITERATE IN BATCH
+
+for batch in data:
+    inputs, lables = batch
+    # set no grad
+    # model output (forward)
+    # pass output to loss
+    # backward
+    # step optimizer
+
+
+''' 
+
+#                     MODEL EVALUATION AND VALIDATION
+'''
+By evaluating this we can see if the model has overfitted and underfitted.
+
+                           MODEL EVALUATION
+
+Models performance are evaluated using following metrics
+
+1. Accuracy                - sum of correct prediction / total no of prediction
+                             
+                              Accuracy can be misleading because of
+                              imbalanced dataset.
+
+2. Precision and Recall     - Precision measure accuracy of the model's positive prediction.
+                              It is mainly used when false positive increases
+
+                              True positive / true positive + false positive 
+
+                              Recall ensures that can a model predicts all
+                              true predictions. It is used when False negative
+                              is in high.
+
+                              True positive / True positive + False negative
+
+                              In a cancer based system a model doesn't predicts
+                              the person who have cancer will make huge risk. 
+
+                              
+3. F1 Score   -   Used when both precision and recall is important
+
+                  f1-score = 2 * (precision * recall / precision + recall)
+
+                  It is particularly useful in imbalanced dataset.
+
+
+
+
+                       MODEL  VALIDATION
+
+Used to see how well the model performed on unseen data, or well it 
+generalize in unseen data.
+
+1. Train val split - validation set of data are helps to measure how
+                     well model predicts unseen data.
+
+                     EX: train_test_split()
+
+                     It helps to prevent over fitting.
+
+
+2. k- fold cross validation - all the data will become train dataset and
+                              validation set.
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
