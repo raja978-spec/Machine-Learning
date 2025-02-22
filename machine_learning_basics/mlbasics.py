@@ -431,4 +431,79 @@ Email spam detection (spam vs. not spam)
 Sentiment analysis (positive, neutral, negative)
 Medical diagnosis (disease classification)
 Image recognition (object detection)
+
+
 '''
+
+
+#                      K-NEAREST NEIGHBORS
+'''
+ It is a classification technique that uses set of data points to learn
+ to predict new data point.
+
+ ALGORITHM:
+
+ step1: choose one unknow data point
+ step2: find the distance between unknow data point to all
+        other data point
+ step3: if any of the other points are near to the unknow point
+        then the unknown point will become a member of that all
+        other points.
+ step4: predict the response of unknown point.
+
+ For formula and graph image refer  KNN.docx
+
+
+ EXAMPLE:
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+dataset = pd.read_csv(r'dataset\user_data.csv')
+features = dataset.iloc[:,2:4].values
+labels = dataset.iloc[:,-1:].values
+
+train_feature, test_feature, train_labels, test_labels = train_test_split(features, labels, test_size=0.25)
+
+sc = StandardScaler() # normalize dataset within specific range
+                      # to speed up the training process
+
+#print(train_feature[:5])
+train_feature = sc.fit_transform(train_feature)
+test_feature = sc.fit_transform(test_feature)
+#print(train_feature[:4])
+
+from sklearn.neighbors import KNeighborsClassifier
+
+# metrics is the computation used to calculate the 
+# distance between points
+# n_neighbors specifies how many neighbor points
+# should be found from unknown point.
+# p=2 is the value for for euclidean formula(formula 
+# to calculate distance, sqrt(other_point, unknown_point**p))
+# when we give p=1  d(x, y) = \sum this formula will
+# be applied this is called Manhattan Distance (L1 norm)
+# which Works well with high-dimensional or sparse data.
+#p>2: Less commonly used but gives more weight to larger differences.
+
+classifier = KNeighborsClassifier(n_neighbors=5,p=2, metric='minkowski')
+classifier.fit(train_feature, train_labels)
+
+# We will use confusion metric to see 
+# how many correct and wrong prediction
+# are made by model. sum of the diagonal elements
+# are the correct prediction while others are
+# wrong prediction.
+from sklearn.metrics import confusion_matrix
+
+model_prediction_labels = classifier.predict(test_feature)
+
+cm = confusion_matrix(test_labels,model_prediction_labels)
+print(cm)
+
+# OUTPUT: 
+# [[56  6]
+#  [ 4 34]]
+'''
+
