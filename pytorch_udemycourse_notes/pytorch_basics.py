@@ -566,10 +566,65 @@ generalize in unseen data.
 
 
 2. k- fold cross validation - all the data will become train dataset and
-                              validation set.
+                              validation set. 
+
+                              It splits the data into k fold from that
+                              fold some part is used for training and
+                              remaining part is used for testing, and finally
+                              it calculate mean of all k folds that is
+                              the value given by this function.
+
+                              This computation is not good for bigger
+                              dataset or complex model.
+
+3. Stratified k-Fold - varation of k-fold that ensure model are trained
+                       with all classes.
+
+                       It is particularlly used in classification 
+                       imbalanced dataset.
+
+
+            MONITORING THE MODEL PERFORMANCE DURING TRAINING
+
+It can be done by plotting the loss values of each epoch in training.
+
+EX:
+
+import matplotlib.pyplot as pylt
+
+pylt.plot(train_loss)
+pylt.plot(val_loss)
+pylt.show()
+
+It is mainly used to detect overfitting and underfitting earlier.
+
+Both train,val loss are decreased in same manner - model learning well
+trains loss decreasing, validation loss increasing - overfitting
+train loss increase, validation loss increase - underfitting
+
+SOLUTION FOR OVERFITTING:
+
+Accuracy curves, Early stopping(prevent overfitting)
+
+Following are the more solutions to prevent ovefitting
+
+import torch
+import torchvision
+
+model = torch.nn.Linear(in_features=10, out_features=5)
+
+#apply L2 regularization
+optimizer = torch.optim.SGD(model.parameters, lr=0.01, weight_decay=0.01)
+drop_out = torch.nn.Dropout(p=0.5)
+data_augmantation = torchvision.transforms.RandomHorizontalFlip()
+
+
+SOLUTIONS FOR UNDERFITTING
+
+1. Create more neural layers
+2. Increase training epoch
+3. Reduce regularization
 '''
-
-
 
 
 

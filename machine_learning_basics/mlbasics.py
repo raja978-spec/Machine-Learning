@@ -507,3 +507,122 @@ print(cm)
 #  [ 4 34]]
 '''
 
+#                     MODEL EVALUATION AND VALIDATION
+'''
+By evaluating this we can see if the model has overfitted and underfitted.
+
+                           MODEL EVALUATION
+
+Models performance are evaluated using following metrics
+
+1. Accuracy                - sum of correct prediction / total no of prediction
+                             
+                              Accuracy can be misleading because of
+                              imbalanced dataset.
+
+2. Precision and Recall     - Precision measure accuracy of the model's positive prediction.
+                              It is mainly used when false positive increases
+
+                              True positive / true positive + false positive 
+
+                              Recall ensures that can a model predicts all
+                              true predictions. It is used when False negative
+                              is in high.
+
+                              True positive / True positive + False negative
+
+                              In a cancer based system a model doesn't predicts
+                              the person who have cancer will make huge risk. 
+
+                              
+3. F1 Score   -   Used when both precision and recall is important
+
+                  f1-score = 2 * (precision * recall / precision + recall)
+
+                  It is particularly useful in imbalanced dataset.
+
+
+
+
+                       MODEL  VALIDATION
+
+Used to see how well the model performed on unseen data, or well it 
+generalize in unseen data.
+
+1. Train val split - validation set of data are helps to measure how
+                     well model predicts unseen data.
+
+                     EX: train_test_split()
+
+                     It helps to prevent over fitting.
+
+
+2. k- fold cross validation - all the data will become train dataset and
+                              validation set. 
+
+                              It splits the data into k fold from that
+                              fold some part is used for training and
+                              remaining part is used for testing, and finally
+                              it calculate mean of all k folds that is
+                              the value given by this function.
+
+                              This computation is not good for bigger
+                              dataset or complex model.
+
+3. Stratified k-Fold - varation of k-fold that ensure model are trained
+                       with all classes.
+
+                       It is particularlly used in classification 
+                       imbalanced dataset.
+
+
+            MONITORING THE MODEL PERFORMANCE DURING TRAINING
+
+It can be done by plotting the loss values of each epoch in training.
+
+EX:
+
+import matplotlib.pyplot as pylt
+
+pylt.plot(train_loss)
+pylt.plot(val_loss)
+pylt.show()
+
+It is mainly used to detect overfitting and underfitting earlier.
+
+Both train,val loss are decreased in same manner - model learning well
+trains loss decreasing, validation loss increasing - overfitting
+train loss increase, validation loss increase - underfitting
+
+SOLUTION FOR OVERFITTING:
+
+Accuracy curves, Early stopping(prevent overfitting)
+
+Following are the more solutions to prevent ovefitting
+
+import torch
+import torchvision
+
+model = torch.nn.Linear(in_features=10, out_features=5)
+
+#apply L2 regularization
+optimizer = torch.optim.SGD(model.parameters, lr=0.01, weight_decay=0.01)
+drop_out = torch.nn.Dropout(p=0.5)
+data_augmantation = torchvision.transforms.RandomHorizontalFlip()
+
+
+SOLUTIONS FOR UNDERFITTING
+
+1. Create more neural layers
+2. Increase training epoch
+3. Reduce regularization
+'''
+
+
+#                  HYPER PARAMETER TUNING
+'''
+ Process of optimizing hyper paramters like batch_size, learning rate(
+ controls the step size of weight update), increase number of layers 
+ in model, regularization, increasing no of epoch
+
+'''
