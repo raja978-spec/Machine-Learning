@@ -385,7 +385,7 @@ print(f'{t_accuracy} ,{train_accuracy}')
 
 
 '''
-#                   CLASSIFICATION
+#                          CLASSIFICATION
 '''
  Classification in Machine Learning (ML) is a supervised learning 
  technique used to categorize data into predefined labels or 
@@ -460,7 +460,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-dataset = pd.read_csv(r'dataset\user_data.csv')
+dataset = pd.read_csv(r'dataset/user_data.csv')
 features = dataset.iloc[:,2:4].values
 labels = dataset.iloc[:,-1:].values
 
@@ -502,10 +502,96 @@ model_prediction_labels = classifier.predict(test_feature)
 cm = confusion_matrix(test_labels,model_prediction_labels)
 print(cm)
 
-# OUTPUT: 
-# [[56  6]
-#  [ 4 34]]
+OUTPUT: 
+[[56  6]
+ [ 4 34]]
 '''
+
+#                           DECISION TREE
+'''
+It is one of the supervised learning technique that some feature
+from dataset and break down's those feature into different segmentation
+to determine the importance of the feature.
+
+Decision tree has several leaf nodes and edge nodes
+
+It will repeat this process for all feature
+
+
+EX: Consider age is the feature decision tree takes from dataset, it
+    will segment like the below one.
+
+                             AGE
+                               |
+                        |--------------|
+                               |
+                      young  middle   senior
+                              age
+                        |
+                       Sex
+                        |
+                      ------
+                      |     |
+                      F     M
+
+                    
+                                ENTROPY
+
+Decision tree uses entropy measurement to make decision tree. This measurement
+gives the uncertainty or randomness of the data
+
+Decision tree takes the parameter with high randomness, so that it can
+identify all possible value.  
+
+EX: in coin toss head probability - 0 (no randomness) (when a coin has head
+                                                       in both side)
+
+                 tail probability - 1 (high randomness) (when a coin head, tail
+                                                         both side)
+
+
+                                                         
+            REFER Decision_tree.docx for example dataset with DT pic
+                                                         
+
+EX:
+
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn import metrics
+
+path = r'dataset/salaries.csv'
+dataset = pd.read_csv(path)
+
+# labelencoder split feature and lables
+# train test split
+# 
+
+from sklearn.preprocessing import LabelEncoder
+
+encoder = LabelEncoder()
+features = dataset.iloc[:,:-1]
+labels = dataset.iloc[:,-1:]
+df_columns = features.columns
+
+for i in range(len(df_columns)):
+    encoded_column = encoder.fit_transform(features[df_columns[i]])
+    features[df_columns[i]] = encoded_column
+
+train_feature, test_feature, train_labels, test_labels = train_test_split(features, labels, test_size=0.2, random_state=30)
+
+model = DecisionTreeClassifier(criterion='entropy', max_depth=3)
+model.fit(train_feature, train_labels)
+
+prediction = model.predict(test_feature)
+
+score = metrics.accuracy_score(test_labels, prediction)
+print(score)
+
+
+'''
+
 
 #                     MODEL EVALUATION AND VALIDATION
 '''
