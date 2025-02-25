@@ -712,3 +712,13 @@ SOLUTIONS FOR UNDERFITTING
  in model, regularization, increasing no of epoch
 
 '''
+
+#            REPRODUCIBILITY OF MODEL PREDICTION
+'''
+ It allows other users to verify your model's prediction, it is very
+ crucial because various users have various device capability but
+ still some of the techniques that can be used on torch to give the
+ same good prediction result to all users.
+
+ REFER reproducibility_model.docx for such methods
+'''

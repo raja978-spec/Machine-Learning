@@ -770,6 +770,8 @@ similar to the model trained task.
 for params in resnet.parameters():
     params.requires_grad = True
 
+model.train()
+
 EX: use a resnet model which learn the image edges already are further
     trained to recognize medical images.
 '''
@@ -848,32 +850,230 @@ trand = pad_sequences("This is simple text", maxlen=100, truncating='post')
 2. RNN             
 
 '''
-from keras.preprocessing.sequence import pad_sequences
 
-trand = pad_sequences("This is simple text", maxlen=100, truncating='post')
+#                MODEL DEPLOYMENT
+'''
+                   SAVING MODEL
 
+import torch
 
+model = torch.nn.Sequential([
+    torch.nn.Linear(in_features=100, out_features=50),
+    torch.nn.ReLU(),
+    torch.nn.Linear(in_features=50, out_features=10)
+])
 
+# model.state_dict() contains model weights and biases. 
+# it is recommended
+torch.save(model.state_dict(), 'model.pth')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# saving entire model
+# this is not recommended especially when dealing with
+# dynamic computational graph
+torch.save(model, 'model.pth')
 
 
+                        LOAD MODEL
+
+import torch
+from sompath import SampleModelClass
+
+# To state model we need to initial the
+# model archintecture first
+model = SampleModelClass()
+model.load_state_dict(torch.load('model.pth'))
+
+
+# Load entier model
+model.load('model.pth')
+
+                           
+                           DEPLOY MODEL
+
+For deploy model we need to serialize them in a format that can run 
+in any platform. For this jiit script used here, that converts our
+pytorch model to script that can be run in any platform without 
+python run time.
+
+import torch
+
+model = torch.nn.Sequential([
+    torch.nn.Linear(in_features=100, out_features=50),
+    torch.nn.ReLU(),
+    torch.nn.Linear(in_features=50, out_features=10)
+])
+
+scripted_model = torch.jit.script(model)
+torch.jit.save(scripted_model, 'model_script.pt')
+
+This can be deployed and can be runnable on any devices like mobile
+devices and edge devices.
+
+import torch
+
+model = torch.nn.Sequential([
+    torch.nn.Linear(in_features=100, out_features=50),
+    torch.nn.ReLU(),
+    torch.nn.Linear(in_features=50, out_features=10)
+])
+
+scripted_model = torch.jit.script(model)
+torch.jit.save(scripted_model)
+
+
+                      SERVING A MODEL TO FLASK, FASTAPI and
+                                AWS Lambda
+
+            REFER severing_model_to_python_backendframewors.docx
+'''
+
+#                 DEBUG DEPLOYED MODEL
+'''
+ Before going to build a model we have to keep in mind one thing that
+ our model should capable to process NAN and infinite like values
+
+ And also by seeing real world data after deploying model's performance might
+ be reduced, so we have to debug it to make the correct prediction on 
+ real world data.
+
+ REFER maintaining deployed model.docx to get the idea of how to debug
+ and overcome from unwanted common pytorch errors
+'''
+
+#         DISTRIBUTED TRAINING AND PERFORMANCE OPTIMIZATION
+'''
+ Distributed training uses multiple GPU to train your model faster
+
+EX:
+
+import torch
+
+import torch.distributed as dist
+
+# initilize the communication between GPUs
+dist.init_process_group(backend='nccl',init_method='env://')
+
+# wrap your model to distributed parallel
+# this function breaks all dataset to different GPU devices and
+# the weights and biases of each GPU device will be synchronized.
+
+distributed_training = torch.nn.parallel.DistributedDataParallel(model, device_ids=[local_rank])
+
+# ensure each process are assigned to each GPU
+torch.cuda.set_device(local_rank)
+model.cuda(local_rank)
 
 
 
+                       DISTRIBUTED SAMPLER
+
+Ensure all GPUs has different sub sets of data by using this distributed
+sampler.
+
+import torch
+
+train_sampler = torch.utils.data.DistributedSampler(train_dataset)
+train_loader = torch.utils.data.DataLoader(dataset=train_dataset, sampler=train_sampler)
+
+
+     REFER model_perfomance_optimizer.docx for more optimization
+     techniques
+
+
+'''      
+
+#                     CUSTOM LAYERS, LOSS FUNCTIONS
+'''
+ custom layers allows to do unique operation which are not present
+ in pytorch
+
+EX FOR CUSTOM LAYERS:
+
+import torch.nn as nn
+import torch
+class CustomLayer(nn.Module):
+    def __init(self, in_features, out_features):
+        super(CustomLayer, self).__init__()
+        self.linear = nn.Linear(in_features, out_features)
+        self.relu = nn.ReLU()
+
+        # custom the initlization weight parameter using this
+        torch.nn.init.xavier_uniform_(self.linear.weight)
+
+    def forward(self,x):
+        x = self.linear(x)
+        x = self.relu(x)
+        return x
+
+
+model = nn.Sequential([
+    CustomLayer(100,50),
+    nn.Linear(50,10)
+])
+
+
+
+
+EXAMPLE FOR CUSTOM LOSS FUNCTION:
+
+
+import torch.nn as nn
+import torch
+
+import torch.nn as nn
+import torch
+
+class CustomLoss(nn.Module):
+
+    def __init__(self):
+        super(CustomLoss, self).__init__()
+
+    def forward(self, output, target):
+        loss = torch.nn.functional.mse_loss(output, target) + 0.1 * torch.mean(output)
+        return loss
+
+criterion = CustomLoss()
+loss = criterion(output, target)
+
+
+And you can create custom metrix function like normal python functions
+that evaluate the performance of model on test data or validation data.
+
+And also we can use this same nn.Module to create custom generalization
+like drop 
+
+                    
+                    ADVANCED ACTIVATION FUNCTION(SWISH, MISH, GELU)
+
+import torch.nn as nn
+import torch
+
+class Swish(nn.Module):
+
+    def forward(self, x): # normal relu activation function has not
+                          # this implementation, it iw work will
+                          # on some deep learning nerual network
+        return x * torch.sigmoid(x)
+
+model = nn.Sequential([
+    nn.Linear(50,10),
+    Swish(),
+    nn.Linear(10,5)
+])
+    
+
+MISH - used in CNN network
+GELU - used in RNN like model, it is used in BERT like model
+'''
+
+
+#            REPRODUCIBILITY OF MODEL PREDICTION
+'''
+ It allows other users to verify your model's prediction, it is very
+ crucial because various users have various device capability but
+ still some of the techniques that can be used on torch to give the
+ same good prediction result to all users.
+
+ REFER reproducibility_model.docx for such methods
+'''
 
