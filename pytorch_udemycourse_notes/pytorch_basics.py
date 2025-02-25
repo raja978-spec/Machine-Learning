@@ -626,12 +626,231 @@ SOLUTIONS FOR UNDERFITTING
 3. Reduce regularization
 '''
 
+#                     ADVANCE NEURAL NETWORK WITH PYTORCH(CNN, RNN)
+'''
+ Traditional feedforward network is not efficient to train a data like
+ image and text, for this CNN and RNN,  deep neural networks are used
+
+ 1. CNN - takes input image and apply filters(kernal) to take the main
+          part of the images like edges, horizontal edges. This process
+          is called feature mapping.
+
+          Filters: It is small metrics used to detect specific feature of
+                   input data, values of this filters found during training
+                   process.
+
+          stride: Determines how filter moves each step
+
+          padding: used to maintain original dim of data
+
+          Pooling: It is a layer which reduces the spatial dim for more speed computations
+                   It can be max and average pooling.
+
+          
+                      Common CNN architecture
+
+1. LeNet - used to recognize handwritten digit in minst dataset.
+           Has 2 layers, pooling and fully connected dense layer.
+
+2. AlexNet - Used for large scale image classification, has more layers
+             like ReLu activations and DropOut for regularization.
+
+3. VGG - Widely used in image classification, feature extraction, has
+         deep layer with small 3X3 filter, improves model performance
+
+4. ResNet - Used for object detection and image classification, provides
+            more much more deeper layer, finds shortcut connection and skips
+            one or more layer to find better one.
+
+
+                     RECURRENT NEURAL NETWORK
+
+Handel sequential data like time series, natural language processing
+speech recognization, unlike normal independant dataset it depends on
+it's previous data, Has memory to maintian previuos data until the current
+data gets arrived.
+
+EX: meaning of a word is depending on memorizing each next letters.
+
+
+                            LSTM 
+
+long short time memory Overcomes the limitation of RNN, RNN is not used for
+long dependencies in RNN it stores each letter while this stores each word or
+sentence, paragraph
+
+EX: it predicts the next letter of the senetence by memorizing large sentence.
+
+
+                         APPLICATION OF LSTM
+
+Used in sentiment analysis, language translation for text, stock price prediction,
+weather forecasting for time series analysis
+
+EX: LSTM predicts next days stock price by the previous data.
+
+Has input, forgot, output gates.
+
+                      TRANSFORMER NETWORK
+
+This network models captures long dependencies more effectively than RNNs
+it will predict same word with different meaning that is called self attention.
+
+In transformer architecture it has encoder to process input, decoder to generate
+output. Positional indexing are used to put the indexes on the give text
+data to understand the different relation on a word.
+
+EX: website like gpt(generative pretrained transformer) uses this 
+    architecture it process input text and generates output texts.
+'''
+
+#            TRANSFER LEARNING AND FINE TUNING
+'''
+ Pre trained model learned patterns from large dataset, by transfering
+ this learning to new task we can reduce learning time of a model.
+
+ The approach is used when we have small dataset for new task
+
+ It improves performance when target data is small.
+
+ Pre trained model available in pytorch in torchvision resnet50, it
+ has pre trained model for image classification and object detection
+
+ EX:
+
+import torchvision.models as models
+resnet = models.resnet50(pretrained=True)
+
+You can use this model as it is, or you can fine tuning the model to
+adapt small new task.
+
+
+             PRE-TRAINED MODEL ON HUGGING FACE
+
+Provides pre-trained model for NLP, text classification, text generation.
+sentiment analysis.
+
+BERT is the pre-trained model.
+
+
+from tranformers import BertModel
+
+model = BertModel.from_pretrained('bert-base-uncased')
+
+
+                  FEATURE EXTRACTION FOR SPECIFIC DOMAIN
+
+Involves further training the pre trained model for specific task
+
+It freezes the earlier layer of pre trained model and replace 
+last layer by adding new layer for new task
+
+While training the pre trained model it is important to select good
+hyper parameter tuning like learning rate, batch size, no of epochs
+to avoid overfitting, especially 
+
+
+import torchvision.models as models
+resnet = models.resnet50(pretrained=True)
+import torch
+
+for params in resnet.parameters():
+    params.requires_grad = False
+
+num_classes = 10
+resnet.fc = torch.nn.Linear(in_features=resnet.fc.in_features, out_features=num_classes)
+
+
+                      FINE TUNING
+
+In this we will not frozen the earlier layers of pre trained model we used
+the pertrained model directly on dataset, It it mainly used if the new task is
+similar to the model trained task.
+
+for params in resnet.parameters():
+    params.requires_grad = True
+
+EX: use a resnet model which learn the image edges already are further
+    trained to recognize medical images.
+'''
+
+
+#                   HANDLING COMPLEX DATA
+'''
+
+                   IMAGE HANDING
+
+Data Augmentation for image dataset improves generalization
+  
+   EX:
+
+   Randomly selecting the subset of the image crop it.
+
+   from torchvision.transforms import RandomCrop
+   trand = RandomCrop(size=(24,24))
+
+   Like this RandomHorizontalFlip and RandomRotation are used.
+
+   RandomHorizontalFlip(p=0.5)
+
+   RandomRotation(degree=45)
+
+   ColorJitter(brighness=0.5, contrast, saturation, hue)
+
+   AdjustBrightness(brightness_factor=0.3)
+   
+
+                     TEXT HANDLING
+
+Text data preprocessing - Tokenization represents smallest unit of meaning
+
+   Word Level Tokenization  - split text into words, each word considered as
+                              seperate token, used on text classification and
+                              sentiment analysis
+
+from nltk.tokenize import word_tokenize
+
+trand = word_tokenize("This is simple text")
+
+    
+   Character level tokenization - splits text into char, each char considered
+                                  as token, used for language translation
+                                  txt generation
+
+                                trand = list("This is simple text")
+
+
+                HANDLING SEQUENCE OF VARIABLE LENGTH
+
+1. Padding - helps to change the short sequence to match neural network
+             input length
+
+from keras.preprocessing.sequence import pad_sequences
+
+trand = pad_sequences("This is simple text", maxlen=100, padding='post')
+
+
+2. truncation - truncat sequence to match input lenght if sequence is too long
+
+from keras.preprocessing.sequence import pad_sequences
+
+trand = pad_sequences("This is simple text", maxlen=100, truncating='post')
 
 
 
 
+                        TIME SERIES DATA HANDLING
 
 
+1. Temporal Convolution Neural Network - TCN adapted to handle time series
+                                         data by applying filter
+
+2. RNN             
+
+'''
+from keras.preprocessing.sequence import pad_sequences
+
+trand = pad_sequences("This is simple text", maxlen=100, truncating='post')
 
 
 
