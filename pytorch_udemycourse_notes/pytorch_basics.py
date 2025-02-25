@@ -1077,3 +1077,19 @@ GELU - used in RNN like model, it is used in BERT like model
  REFER reproducibility_model.docx for such methods
 '''
 
+#            OTHER LIBRARY INTEGRATION WITH PYTORCH
+'''
+ pytorch already allows to integrate other libraries like OpenCV,
+ NLTK, spaCY
+
+ And also we can use tensorflow models on pytorch anf pytorch models
+ to tensorflow by converting the models into a common format with
+ ONNX(open neural network exchange).
+
+ ONNX is the open format that allows model to communicate different
+ frameworks.
+
+ onnxkeras is the library helps to load keras models.
+
+ REFER other_library_iteration_with_pytorch.docx for code
+'''
