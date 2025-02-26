@@ -592,6 +592,95 @@ print(score)
 
 '''
 
+#                    LOGISTIC   REGRESSION
+'''
+ It is a supervised classification algorithm which predicts the given
+ input is belongs to some class.
+
+ It uses S curve above curve is one category below curve is another
+ category
+ 
+ so it uses sigmoid function, which put any real number into the 
+ range of 0-1.
+
+ It uses  1/1+(e)-z  where z= wX+b 
+ 
+ If the output probability is ≥ 0.5, the input is classified as 1 (positive class).
+ If the output probability is < 0.5, the input is classified as 0 (negative class).
+
+ Types of Logistic Regression:
+ 
+ Binary Logistic Regression – Used when there are only two classes 
+ (e.g., Spam or Not Spam).
+
+ Multiclass Logistic Regression (Multinomial Regression) – Used when 
+ there are more than two classes.
+
+ Ordinal Logistic Regression – Used when classes have an order 
+ (e.g., Low, Medium, High).
+
+EX:
+
+import pandas as pd
+
+ds= pd.read_csv(r'dataset\user_data.csv')
+features = ds.iloc[:,2:4].values
+labels = ds.iloc[:,-1:].values.ravel() # logistic regression requires
+                                       # 1D array as it's label
+                                       # it converts 2D array into 1D
+
+from sklearn.preprocessing import StandardScaler
+
+sc = StandardScaler()
+Tfeatures = sc.fit_transform(features)
+
+from sklearn.model_selection import train_test_split
+
+# Setting random_state=0 ensures the same split every time you 
+# run the code.
+# If you don't set random_state, the split may be different on 
+# each run, leading to slight variations in model performance.
+
+train_features, test_features, train_labels, test_lables = train_test_split(Tfeatures, labels, test_size=0.25, random_state=0)
+
+print(train_features.shape, train_labels.shape)
+from sklearn.linear_model import LogisticRegression
+
+# Some algorithms (including logistic regression) use 
+# randomization for optimization (e.g., weight initialization, 
+# handling class imbalances).
+# Setting random_state=0 ensures the model's internal random 
+# choices remain the same on each run.
+
+model = LogisticRegression(random_state=0)
+model.fit(train_features, train_labels)
+
+predicted_purchase = model.predict(test_features)
+
+from sklearn.metrics import confusion_matrix
+import seaborn as sb
+import matplotlib.pyplot as plt
+
+cm = confusion_matrix(test_lables, predicted_purchase)
+sb.heatmap(cm)
+plt.show()
+
+
+
+
+        DIFFERENCE BETWEEN LINEAR AND LOGISTIC REGRESSION
+
+1. Linear is applied on continuos numeric data, while logistic is applied
+   on categorical data.
+
+2. Linear uses best fit line while logistic uses S curve
+
+3. Dependant and In dependant variables in linear regression should
+   have connection or should have relationship in linear manner, while
+   logistic will not have connections
+'''
+
+
 
 #                     MODEL EVALUATION AND VALIDATION
 '''
@@ -722,3 +811,5 @@ SOLUTIONS FOR UNDERFITTING
 
  REFER reproducibility_model.docx for such methods
 '''
+
+
