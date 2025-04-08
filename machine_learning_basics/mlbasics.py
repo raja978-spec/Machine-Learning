@@ -8,9 +8,7 @@
  EX: 
 
  Example: Predicting if a fruit is an Apple or an Orange based on features
-python
-Copy
-Edit
+
 from sklearn.tree import DecisionTreeClassifier
 
 # Step 1: Define the training data (features) and labels
@@ -680,7 +678,50 @@ plt.show()
    logistic will not have connections
 '''
 
+#                       CLUSTERING
+'''
 
+Unsupervised learning that subsets the whole data by finding common patterns
+in it, here data divides without overlapping
+
+Why do we need clustering ?
+
+* Find duplicate
+* Create summary from dataset
+* Noise data detection
+* Procedures for pre-processing
+
+
+Algorithms in clustering
+
+* K-means - Divides data into k different cluster to identify the common pattern
+            among this.
+
+            The model efficient is depends on the no of cluster in divides
+
+            so that no of k is determined by the methods called elbow method,
+            which calculate the total variance with in a cluster.
+
+            It follows WCSS within cluster sum of squares to find the
+            variance inside the cluster 
+            (sum_of_all_elements_within_a_cluster)**2
+
+            Refer clustering.docx for actual elbow method formula.
+
+            The name itself elbow says that we plot line with no of
+            cluster(x) and the value of WCSS(y) for each cluster
+            after plotting all lines for all cluster look at the plot
+            where the plot goes like a sharp bend(like a arm in hand
+            when we do stich elbow) that point considered as the best
+            value of k.
+
+            Refer clustering.docx for graph image
+
+
+* Hierarchy
+* Density based clustering
+
+'''
 
 #                     MODEL EVALUATION AND VALIDATION
 '''
@@ -792,6 +833,7 @@ SOLUTIONS FOR UNDERFITTING
 2. Increase training epoch
 3. Reduce regularization
 '''
+
 
 
 #                  HYPER PARAMETER TUNING
