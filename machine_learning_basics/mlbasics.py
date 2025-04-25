@@ -853,3 +853,12 @@ SOLUTIONS FOR UNDERFITTING
 
  REFER reproducibility_model.docx for such methods
 '''
+
+#                   FEATURE SCALING
+'''
+A single column may contains data like 20,30000,500.
+All the values are should be in same range that is called
+feature scaling
+
+See data-preprocessing(feature scaling).docx for more info
+'''
