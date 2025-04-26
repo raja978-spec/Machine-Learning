@@ -367,7 +367,6 @@ print(f'{t_accuracy} ,{train_accuracy}')
                         similar to regression.
 '''
 
-
 #                   OVERFITTING, VARIANCE AND REGULARIZATION
 '''
  When train accuracy is hight and test accuracy is low overfitting will

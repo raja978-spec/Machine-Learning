@@ -73,12 +73,38 @@ print(data['x'])
 9   -0.484029
 Name: x, dtype: float64
 '''
-import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
 
-data = pd.DataFrame({'x':[200,50000,30203,42,13,1,4,51,1,5]})
+# Given dataset
+x_experience = np.array([1, 2, 3, 4, 5, 6]).reshape(-1, 1)  #sklearn expectes 2d array
+                                                            #that is why shape it transformed
+y_salary = np.array([367, 654, 754, 865, 2444, 3344])
 
-from sklearn.preprocessing import StandardScaler
-nor = StandardScaler()
-data['x'] = nor.fit_transform(data)
-print(data['x'])
+
+poly = PolynomialFeatures(degree=2)
+x_poly = poly.fit_transform(x_experience) # change x into x,x**2, x**3
+                                          # which is b0, b1, b2....
+
+
+model = LinearRegression()
+model.fit(x_poly, y_salary) #pass the x_poly
+
+# Predict for smooth curve
+x_test = np.linspace(1, 6, 100).reshape(-1, 1)  # Generate smooth X values
+x_test_poly = poly.transform(x_test)
+y_pred = model.predict(x_test_poly)
+
+
+plt.figure(figsize=(6,6))
+
+plt.title('Normal plot')
+plt.scatter(x_experience, y_salary)
+
+plt.title('Polynomial plot')
+plt.plot(x_test, y_pred, color='red')
+
+plt.tight_layout()
+plt.show()      
