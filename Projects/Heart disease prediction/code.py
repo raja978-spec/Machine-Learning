@@ -38,8 +38,11 @@ None
 # print(data.isna().sum()) 0 
 # print(data.isnull().sum()) 0
 
-#sns.pairplot(data.iloc[:,2:], kind='scatter')
-#plt.show()
+sns.heatmap(data.iloc[:,2:12].corr(), 
+            annot=True,
+            fmt='.1f')
+
+plt.show()
 
 features = data.iloc[:,2:12]
 
@@ -53,15 +56,27 @@ train_features, test_feature, train_labels, test_labels = train_test_split(featu
 model = LogisticRegression()
 model.fit(train_features, train_labels)
 
-predicted_lables = model.predict(test_feature)
+predicted_lables_for_test = model.predict(test_feature)
+predicted_lables_for_train = model.predict(train_features)
 
-score = accuracy_score(test_labels, predicted_lables)
-print('{:.2f}'.format(score))
 
-con = confusion_matrix(test_labels, predicted_lables)
+score1 = accuracy_score(test_labels, predicted_lables_for_test)
+print('test','{:.2f}'.format(score1))
+
+con = confusion_matrix(test_labels, predicted_lables_for_test)
 
 sns.heatmap(con, annot=True, cbar=True, cmap='Blues')
+
 plt.show()
+
+score2 = accuracy_score(train_labels, predicted_lables_for_train)
+print('train','{:.2f}'.format(score2))
+
+con1 = confusion_matrix(train_labels, predicted_lables_for_train)
+
+sns.heatmap(con1, annot=True, cbar=True, cmap='Blues')
+plt.show()
+
 
 
 
