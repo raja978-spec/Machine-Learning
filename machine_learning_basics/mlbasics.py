@@ -861,3 +861,25 @@ feature scaling
 
 See data-preprocessing(feature scaling).docx for more info
 '''
+
+#                RANDOM FOREST FOR CLASSIFICATION AND REGRESSION
+'''
+A Random Forest model is used for supervised machine learning tasks, specifically for:
+1. Classification
+Predicting a category or class label (e.g., spam or not spam, disease or no disease).
+2. Regression
+Predicting a continuous numerical value (e.g., house price, temperature).
+
+🔧 How It Works:
+It is an ensemble method: combines many decision trees.
+Each tree is trained on a random subset of the data (with replacement – called bagging).
+The final output is:
+Majority vote for classification.
+Average prediction for regression.
+
+✅ Strengths:
+Handles high-dimensional data well.
+Reduces overfitting (better generalization than single decision trees).
+Can handle both numerical and categorical features.
+
+'''
