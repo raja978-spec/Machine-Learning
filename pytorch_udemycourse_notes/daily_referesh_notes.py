@@ -14,3 +14,9 @@ Has various libraries for computer vision(torchvision)
 ,NLP(tourch text) and Troruch serve for model deployment
 
 '''
+
+#               USE OF TENSORFLOW
+'''
+Same as pytorch, but it has lite version which is used to develop model 
+for mobile applications and it has .js framework too.
+'''
