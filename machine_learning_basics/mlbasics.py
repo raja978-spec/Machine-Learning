@@ -356,6 +356,7 @@ print(f'{t_accuracy} ,{train_accuracy}')
 # 0.8740090373056704 ,0.6376585421842711
 
 # Model is will fitted now
+See machine_learning_basics\Ridge_regression.docx for more details
 
 * Lasso Regression – Uses L1 regularization to shrink less 
                      important features' coefficients to zero.
