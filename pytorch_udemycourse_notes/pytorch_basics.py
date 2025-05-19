@@ -47,7 +47,7 @@ c = torch.tensor(b)
 #                        Tensor with 0,1
 a = torch.zeros(3,3)
 b = torch.ones(3,3)
-#print(a,b)
+print(a,b)
 
 #                    Random tensor
 # Used to initilize weights for the model

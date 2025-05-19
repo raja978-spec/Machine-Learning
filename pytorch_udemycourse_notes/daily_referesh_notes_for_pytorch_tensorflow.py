@@ -15,13 +15,13 @@ Has various libraries for computer vision(torchvision)
 
 '''
 
-#               USE OF TENSORFLOW
+#                       USE OF TENSORFLOW
 '''
 Same as pytorch, but it has lite version which is used to develop model 
 for mobile applications and it has .js framework too.
 '''
 
-#                        TENSOR
+#                        TENSOR CREATION IN PYTORCH
 '''
 * Important built in block in DL
 * It is like numpy so we can do all the numpy
@@ -29,11 +29,16 @@ for mobile applications and it has .js framework too.
   GPU devices to train DL like models.
 * Tensor have to_cuda() method that moves tensors to GPU
 
-                   ATTRIBUTES IN TENSOR
+                   IMPORTANT METHODS IN TENSOR
 
 1. shape - gives the shape of each dimension
 2. dtype - tensor can hold int32,64 float32,64 bool32,64
 3. ndim - gives no of dimensions the tensor have
+
+                   IMPORTANT ATTRIBUTES IN TENSOR
+
+1. device - helps to specify the device which the tensor
+            going to be processed.
 
                   CREATING TENSOR
 
@@ -61,7 +66,7 @@ b= torch.tensor([
         [5,6,7],
         [7,8,9]
     ]
-])
+], device='cpu')
 
 print(b.shape)
 print(b.ndim)
@@ -78,35 +83,91 @@ torch.int32
 
  [[5 0 0]
   [0 0 0]]]
+
+  
 '''
 
+#              VARIOUS WAY OF CREATING TENSORS IN PYTORCH
+'''
+
+                     ZEROS AND ONES TENSOR
+
 import torch
+a = torch.zeros(3,3)
+b = torch.ones(3,3)
+print(a,b)
+
+                          RANDOM TENSOR
+import torch
+a = torch.rand(3,3)
+b= torch.randn(3,3)
+c=torch.arange(start=12, end=20,step=2) # 1D tensor
+d=torch.linspace(start=0, end=0.5, steps=3) # 1D tensor
+print(a)
+print(b)
+print(c)
+print(d)
+
+
+OUTPUT:
+tensor([[0.4832, 0.7571, 0.4526],
+        [0.2056, 0.2431, 0.4439],
+        [0.9242, 0.7031, 0.0547]])
+tensor([[-0.9875,  0.5152,  0.6413],
+        [-0.7969, -1.4287,  1.2963],
+        [ 0.8523, -2.1810,  0.2610]])
+tensor([12, 14, 16, 18])
+tensor([0.0000, 0.2500, 0.5000])
+'''
+
+#                 TENSOR CREATION IN TENSORFLOW
+'''
+import tensorflow as tf
 import numpy as np
 
-n_array = np.array([
-    [
-        [1,2,3],
-        [4,5,6]
-    ],
-    [
-        [4,5,6],
-        [9,5,7]
-    ]
-])
+np_a = np.array([1,3,5])
+a= tf.constant(np_a)
+b=tf.range(start=10, limit=15)
+print(a)
+print(type(b),b)
 
-a= torch.tensor(n_array)
-b= torch.tensor([
-    [
-        [1,2,4],
-        [3,4,5]
-    ],
-    [
-        [5,6,7],
-        [7,8,9]
-    ]
-])
+##########OUTPUT################
+tf.Tensor([1 3 5], shape=(3,), dtype=int32)
+<class 'tensorflow.python.framework.ops.EagerTensor'> tf.Tensor([10 11 12 13 14], shape=(5,), dtype=int32)
+'''
 
-print(b.shape)
-print(b.ndim)
-print(a.dtype)
-print(np.where(b>5,0,b))
+#         TENSORFLOW ARITHMETIC OPERATION
+'''
+
+add,subtract,multiply,divide(t1 or only one value, t1 or only one value)
+
+import tensorflow as tf
+import numpy as np
+
+with tf.device('cpu'):
+    np_a = np.array([1,3,5])
+    a= tf.constant(np_a)
+    b=tf.range(start=10, limit=13)
+    print(tf.add(a,b))
+    print(tf.subtract(a,b))
+    print(tf.multiply(a,2))
+    print(tf.divide(a,2))
+
+###############OUTPUT####################
+tf.Tensor([11 14 17], shape=(3,), dtype=int32)
+tf.Tensor([-9 -8 -7], shape=(3,), dtype=int32)
+tf.Tensor([ 2  6 10], shape=(3,), dtype=int32)
+tf.Tensor([0.5 1.5 2.5], shape=(3,), dtype=float64)
+'''
+
+import tensorflow as tf
+import numpy as np
+
+with tf.device('cpu'):
+    np_a = np.array([1,3,5])
+    a= tf.constant(np_a)
+    b=tf.range(start=10, limit=13)
+    print(tf.add(a,b))
+    print(tf.subtract(a,b))
+    print(tf.multiply(a,2))
+    print(tf.divide(a,2))
