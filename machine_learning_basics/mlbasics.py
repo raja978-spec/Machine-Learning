@@ -356,13 +356,15 @@ print(f'{t_accuracy} ,{train_accuracy}')
 # 0.8740090373056704 ,0.6376585421842711
 
 # Model is will fitted now
-See machine_learning_basics\Ridge_regression.docx for more details
 
 * Lasso Regression – Uses L1 regularization to shrink less 
                      important features' coefficients to zero.
 
 * Elastic Net Regression – Combines both L1 (Lasso) and L2 (Ridge) 
                          regularization.
+
+
+See machine_learning_basics\Ridge L2,Laso L1, Elastic net regularization.docx for more details
 
 * Logistic Regression – Used for classification, but conceptually 
                         similar to regression.
@@ -762,8 +764,10 @@ Models performance are evaluated using following metrics
 
                        MODEL  VALIDATION
 
-Used to see how well the model performed on unseen data, or well it 
+Used to see how well the model performed on unseen data, or how well it 
 generalize in unseen data.
+
+See
 
 1. Train val split - validation set of data are helps to measure how
                      well model predicts unseen data.

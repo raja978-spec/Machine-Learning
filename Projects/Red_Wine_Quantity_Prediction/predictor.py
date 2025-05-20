@@ -37,7 +37,7 @@ train_feature, test_feature, train_labels, test_labels = train_test_split(
 train_feature,test_feature,train_lables,test_lables = train_test_split(x,y,
                                                                        test_size=0.2, random_state=42)
 
-lm = LinearRegression()
+lm = Ridge(alpha=1)
 lm.fit(train_feature, train_lables)
 
 prevallm = lm.predict(train_feature)
