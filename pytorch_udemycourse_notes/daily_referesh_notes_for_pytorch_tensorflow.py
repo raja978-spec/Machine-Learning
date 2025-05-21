@@ -136,7 +136,7 @@ tf.Tensor([1 3 5], shape=(3,), dtype=int32)
 <class 'tensorflow.python.framework.ops.EagerTensor'> tf.Tensor([10 11 12 13 14], shape=(5,), dtype=int32)
 '''
 
-#         TENSORFLOW ARITHMETIC OPERATION
+#         TENSORFLOW ARITHMETIC OPERATION IN TENSORFLOW
 '''
 
 add,subtract,multiply,divide(t1 or only one value, t1 or only one value)
@@ -160,14 +160,46 @@ tf.Tensor([ 2  6 10], shape=(3,), dtype=int32)
 tf.Tensor([0.5 1.5 2.5], shape=(3,), dtype=float64)
 '''
 
-import tensorflow as tf
-import numpy as np
+#              TENSOR ARITHMETIC OPERATIONS ON PYTORCH
+'''
+import torch as tf
+a=tf.Tensor([1,2,4])
+b=tf.Tensor([5,6,7])
+print(tf.add(a,b))
+print(tf.subtract(a,b))
+print(tf.mul(a,b))
+print(a/b)
 
-with tf.device('cpu'):
-    np_a = np.array([1,3,5])
-    a= tf.constant(np_a)
-    b=tf.range(start=10, limit=13)
-    print(tf.add(a,b))
-    print(tf.subtract(a,b))
-    print(tf.multiply(a,2))
-    print(tf.divide(a,2))
+OUTPUT:
+tensor([ 6.,  8., 11.])
+tensor([-4., -4., -3.])
+tensor([ 5., 12., 28.])
+tensor([0.2000, 0.3333, 0.5714])
+'''
+
+
+#            OTHER MATRIX OPERATIONS ON TENSORFLOW TENSOR ANS SORT
+'''
+import tensorflow as tf
+
+a = tf.constant([[1,3,4],[5,4,3],[5,3,2]], dtype=tf.float16) # Nd tensors will give error
+
+print(tf.square(a))
+print(tf.sqrt(a))
+print(tf.linalg.inv(a))
+print("Before sort")
+print(a)
+print('After sort')
+print(tf.sort(a, axis=0)) # column sort
+'''
+import tensorflow as tf
+
+a = tf.constant([[1,3,4],[5,4,3],[5,3,2]], dtype=tf.float16) # Nd tensors will give error
+
+print(tf.square(a))
+print(tf.sqrt(a))
+print(tf.linalg.inv(a))
+print("Before sort")
+print(a)
+print('After sort')
+print(tf.sort(a, axis=0)) # column sort
