@@ -795,6 +795,12 @@ See
                        It is particularlly used in classification 
                        imbalanced dataset.
 
+4. Leave One out Cross validation - Takes only one data for test on each iteration
+5. Leave P out cross validation - Takes P data from whole dataset to test the model 
+                                  on each fold
+
+REFER FILE: Cross-validation, Types of cross validation,Stratified K-Fold validation for classification model, Leave onout, P out cross validation.docx
+
 
             MONITORING THE MODEL PERFORMANCE DURING TRAINING
 
