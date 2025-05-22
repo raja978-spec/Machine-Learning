@@ -192,14 +192,25 @@ print(a)
 print('After sort')
 print(tf.sort(a, axis=0)) # column sort
 '''
-import tensorflow as tf
 
-a = tf.constant([[1,3,4],[5,4,3],[5,3,2]], dtype=tf.float16) # Nd tensors will give error
+#      OTHER MATHEMATICAL OPERATIONS AND CONDITIONAL MASK IN PYTORCH TENSOR
+'''
+import torch as tf
+import numpy as np
 
-print(tf.square(a))
-print(tf.sqrt(a))
-print(tf.linalg.inv(a))
-print("Before sort")
-print(a)
-print('After sort')
-print(tf.sort(a, axis=0)) # column sort
+a = tf.Tensor([[12,4,3],[1234,131,13],[14,324,2],[434,24,13]])
+
+print(tf.mean(a))
+print(tf.std(a))
+print(a[a>324])
+print(np.where(a>324,0,a))
+
+OUTPUT:
+tensor(184.)
+tensor(360.3357)
+tensor([1234.,  434.])
+[[ 12.   4.   3.]
+ [  0. 131.  13.]
+ [ 14. 324.   2.]
+ [  0.  24.  13.]]
+'''
