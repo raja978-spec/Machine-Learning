@@ -21,7 +21,7 @@ Same as pytorch, but it has lite version which is used to develop model
 for mobile applications and it has .js framework too.
 '''
 
-#                        TENSOR CREATION IN PYTORCH
+#       TENSOR CREATION IN PYTORCH AND IMPORTANT ATTRIBUTES IN TENSOR
 '''
 * Important built in block in DL
 * It is like numpy so we can do all the numpy
@@ -178,7 +178,7 @@ tensor([0.2000, 0.3333, 0.5714])
 '''
 
 
-#            OTHER MATRIX OPERATIONS ON TENSORFLOW TENSOR ANS SORT
+#     OTHER MATRIX OPERATIONS ON TENSORFLOW TENSOR ANS SORT, REDUCE METHODS, MASKING
 '''
 import tensorflow as tf
 
@@ -191,7 +191,22 @@ print("Before sort")
 print(a)
 print('After sort')
 print(tf.sort(a, axis=0)) # column sort
+
+
+                        REDUCE OPERATIONS
+print(tf.reduce_mean(a))
+print(tf.reduce_sum(a))
+print(tf.reduce_prod(a))
+
+                        MASKING
+import tensorflow as tf
+a = tf.constant([[1,3,4],[5,4,3],[5,3,2]], dtype=tf.float16)
+print(a[a>4])
+
+OUTPUT:
+tf.Tensor([5. 5.], shape=(2,), dtype=float16)
 '''
+
 
 #      OTHER MATHEMATICAL OPERATIONS AND CONDITIONAL MASK IN PYTORCH TENSOR
 '''
@@ -214,3 +229,56 @@ tensor([1234.,  434.])
  [ 14. 324.   2.]
  [  0.  24.  13.]]
 '''
+
+#            TENSOR BOARD CASTING IN PYTORCH AND TENSORFLOW
+'''
+Dim of two tensors is not same will handel it, that is called 
+boardcasting, but no of elements in all dim should be same in both
+tensors
+
+In below example in a dim 1 b dim 1 has 3 elements it they have two elements 
+then error come
+
+import torch as tf
+
+a=tf.Tensor([[1,2,4],[4,5,4]])
+b=tf.Tensor([[12,4,8]])
+print(a+b)
+
+OUTPUT:
+tensor([[13.,  6., 12.],
+        [16.,  9., 12.]])
+'''
+
+# import tensorflow as tf
+
+# a=tf.constant([[[[1,2,4],[1,2,4]],[[1,2,4],[1,2,4]]],
+#                [[[1,2,4],[1,2,4]],[[1,2,4],[1,2,4]]],
+#                [[[1,2,4],[1,2,4]],[[1,2,4],[1,2,4]]]])
+# print(a.shape) #(3,2)
+# print(tf.zeros_like(a))
+
+#  UNSQUEEZE IN PYTORCH
+'''
+If the elements in another tensor dim is not matched then we can use these methods
+
+Unsqueeze Adds a new dimension (of size 1) at the specified position
+import torch as tf
+
+a=tf.Tensor([[1,2,4],[4,5,4],[5,2]])
+b=tf.Tensor([[12,4]])
+print(b.unsqueeze(1))
+print(b.unsqueeze(2))
+print(a+b.unsqueeze(2)) # shape: (1,3)
+
+'''
+
+
+
+
+
+
+
+
+
+
