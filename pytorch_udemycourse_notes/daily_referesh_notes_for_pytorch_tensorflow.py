@@ -120,7 +120,7 @@ tensor([12, 14, 16, 18])
 tensor([0.0000, 0.2500, 0.5000])
 '''
 
-#                 TENSOR CREATION IN TENSORFLOW
+#                 TENSOR CREATION IN TENSORFLOW, CONSTANT, VARIABLE
 '''
 import tensorflow as tf
 import numpy as np
@@ -134,6 +134,47 @@ print(type(b),b)
 ##########OUTPUT################
 tf.Tensor([1 3 5], shape=(3,), dtype=int32)
 <class 'tensorflow.python.framework.ops.EagerTensor'> tf.Tensor([10 11 12 13 14], shape=(5,), dtype=int32)
+
+
+                    IMMUTABLE CONSTANT
+
+values of const tensor cannot be changed
+
+import tensorflow as tf
+
+a=tf.constant([[[[1,2,4],[1,2,4]],[[1,2,4],[1,2,4]]],
+               [[[1,2,4],[1,2,4]],[[1,2,4],[1,2,4]]],
+               [[[1,2,4],[1,2,4]],[[1,2,4],[1,2,4]]]])
+print(a.shape) #(3,2)
+a[0][1] = [3,4,5]
+print(a[0][1])
+
+OUTPUT:
+
+  a[0][1] = [3,4,5]
+TypeError: 'tensorflow.python.framework.ops.EagerTensor' object does not support item assignment
+
+                   
+                      VARIABLE
+
+A tensor changed to variable can be changed
+
+import tensorflow as tf
+
+a=[[1,3,4],[4,3,2]]
+b=tf.Variable(a)
+print(b)
+
+b.assign([[5,3,2],[5,6,7]])
+print(b)
+
+OUTPUT:
+<tf.Variable 'Variable:0' shape=(2, 3) dtype=int32, numpy=
+array([[1, 3, 4],
+       [4, 3, 2]])>
+<tf.Variable 'Variable:0' shape=(2, 3) dtype=int32, numpy=
+array([[5, 3, 2],
+       [5, 6, 7]])>
 '''
 
 #         TENSORFLOW ARITHMETIC OPERATION IN TENSORFLOW
@@ -250,15 +291,8 @@ tensor([[13.,  6., 12.],
         [16.,  9., 12.]])
 '''
 
-# import tensorflow as tf
 
-# a=tf.constant([[[[1,2,4],[1,2,4]],[[1,2,4],[1,2,4]]],
-#                [[[1,2,4],[1,2,4]],[[1,2,4],[1,2,4]]],
-#                [[[1,2,4],[1,2,4]],[[1,2,4],[1,2,4]]]])
-# print(a.shape) #(3,2)
-# print(tf.zeros_like(a))
-
-#  UNSQUEEZE IN PYTORCH
+#                   UNSQUEEZE IN PYTORCH
 '''
 If the elements in another tensor dim is not matched then we can use these methods
 
@@ -270,7 +304,6 @@ b=tf.Tensor([[12,4]])
 print(b.unsqueeze(1))
 print(b.unsqueeze(2))
 print(a+b.unsqueeze(2)) # shape: (1,3)
-
 '''
 
 
