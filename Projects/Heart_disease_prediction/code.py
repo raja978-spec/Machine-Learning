@@ -9,7 +9,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import LabelEncoder
 import os
 
-data = pd.read_csv(os.path.join('data.csv'))
+data = pd.read_csv(os.path.join('Projects','Heart_disease_prediction','data.csv'))
 #print(data.info())
 '''
 <class 'pandas.core.frame.DataFrame'>
@@ -42,7 +42,7 @@ sns.heatmap(data.iloc[:,2:12].corr(),
             annot=True,
             fmt='.1f')
 
-plt.show()
+#plt.show()
 
 features = data.iloc[:,2:12]
 
@@ -56,6 +56,8 @@ train_features, test_feature, train_labels, test_labels = train_test_split(featu
 model = LogisticRegression()
 model.fit(train_features, train_labels)
 
+#                 NORMAL HOLD OUT CROSS VALIDATION METHOD
+'''
 predicted_lables_for_test = model.predict(test_feature)
 predicted_lables_for_train = model.predict(train_features)
 
@@ -76,12 +78,36 @@ con1 = confusion_matrix(train_labels, predicted_lables_for_train)
 
 sns.heatmap(con1, annot=True, cbar=True, cmap='Blues')
 plt.show()
+'''
 
+#                     LEAVE ONE OUT CROSS VALIDATION  
+from sklearn.model_selection import cross_val_score, LeaveOneOut
 
+leave_out = LeaveOneOut()
 
-
-
-
+cross_score = cross_val_score(model, features, labels, cv=leave_out)
+print(data.shape)
+print(cross_score)
+print(cross_score.shape)
+print(np.mean(cross_score))
+'''
+OUTPUT:
+(270, 14)
+[1. 1. 0. 0. 0. 1. 1. 1. 1. 1. 1. 0. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.
+ 1. 1. 0. 1. 1. 1. 0. 0. 1. 1. 1. 1. 1. 0. 1. 1. 0. 1. 1. 1. 1. 1. 1. 0.
+ 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 0. 1. 1. 1. 1. 1. 1. 1. 1. 0. 1. 0. 1. 1.
+ 1. 1. 0. 1. 0. 1. 1. 1. 1. 1. 1. 1. 0. 1. 1. 0. 1. 1. 1. 0. 1. 1. 1. 1.
+ 1. 0. 1. 1. 1. 1. 1. 1. 1. 0. 1. 1. 0. 1. 1. 1. 0. 1. 1. 1. 0. 1. 1. 1.
+ 1. 1. 1. 1. 0. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 0. 1. 1. 1. 1. 1. 1. 0. 0.
+ 0. 1. 0. 1. 1. 1. 1. 1. 1. 0. 1. 1. 1. 1. 1. 1. 0. 1. 1. 1. 1. 1. 1. 1.
+ 0. 0. 1. 1. 1. 0. 1. 1. 1. 1. 0. 1. 1. 1. 0. 0. 0. 1. 1. 0. 1. 1. 1. 1.
+ 1. 0. 1. 1. 0. 1. 1. 1. 1. 1. 1. 0. 1. 1. 1. 1. 1. 1. 0. 1. 1. 1. 1. 1.
+ 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 0. 1. 1. 0. 1. 1. 1. 1. 1.
+ 1. 1. 1. 1. 0. 1. 1. 1. 0. 1. 1. 1. 0. 1. 1. 1. 1. 1. 0. 1. 1. 1. 0. 1.
+ 0. 1. 1. 1. 1. 1.]
+ (270,)
+0.8111111111111111
+'''
 
 
 
