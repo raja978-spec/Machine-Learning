@@ -289,8 +289,8 @@ print(a+b)
 OUTPUT:
 tensor([[13.,  6., 12.],
         [16.,  9., 12.]])
-'''
 
+'''
 
 #                   UNSQUEEZE IN PYTORCH
 '''
@@ -306,6 +306,31 @@ print(b.unsqueeze(2))
 print(a+b.unsqueeze(2)) # shape: (1,3)
 '''
 
+#                 TENSORFLOW EXPAND_DIM
+'''
+import tensorflow as tf
+
+a=tf.constant([[1,2,4],[4,5,4]])
+b=tf.constant([12,4,1]) # it doesn't have 2D
+c=tf.expand_dims(b,axis=0) # o for row, 1 for column
+print(tf.add(a,c))
+
+OUTPUT:
+tf.Tensor(
+[[13  6  5]
+ [16  9  5]], shape=(2, 3), dtype=int32)
+'''
+
+#               SQUEEZE IN TENSORFLOW
+'''
+Remove all dim of size 1
+
+tensor = tf.constant([[[1], [2], [3]]])  # shape: (1, 3, 1)
+squeezed = tf.squeeze(tensor)  # shape: (3,)
+print(squeezed)
+
+Same as pytorch
+'''
 
 
 
