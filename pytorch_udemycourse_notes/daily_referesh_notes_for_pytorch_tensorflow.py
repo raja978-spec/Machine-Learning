@@ -332,6 +332,25 @@ print(squeezed)
 Same as pytorch
 '''
 
+# DYNAMIC COMPUTATIONAL GRAPH WITH REQUIRES_GRAD(AUTO GRAD) ATTRIBUTE, 
+# BACKPROPOGRATION, GRADIENTS
+'''
+Tensor operations are monitored to record how each value is computed, so gradients 
+can be automatically and accurately calculated during backpropagation. 
+This is the core of how neural networks learn.
+
+To do backpropagation DCG are important, to build DCG we have to set auto_grad 
+attribute to True in pytorch tensors.
+
+And also gradients are a calculation that reduces the loss function.
+
+import torch as tf
+
+a = tf.tensor([1,2,3], requires_grad=False, dtype=tf.float16)
+a.sum().backward()
+print(a.grad) # holds the value of gradients
+'''
+
 
 
 
