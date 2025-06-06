@@ -518,6 +518,36 @@ OUTPUT:
 
 REFER  Projects\Diabeted_prediction_with_KNN\diabetes_predictor.py for another
 code example
+
+#                  EXAMPLE FOR KNN REGRESSION
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.metrics import mean_squared_error
+
+df = pd.read_csv('diabetes.csv')
+
+features = df.drop('Outcome',axis=1)
+labels  = df['Outcome']
+
+train_feature, test_feature, train_labels, test_labels = train_test_split(features,labels, test_size=0.2)
+
+model = KNeighborsRegressor(n_neighbors=2)
+model.fit(train_feature, train_labels)
+
+validation_prediction = model.predict(train_feature)
+test_prediction = model.predict(test_feature)
+
+val_score = mean_squared_error(train_labels, validation_prediction)
+test_score = mean_squared_error(test_labels, test_prediction)
+
+print(val_score)
+print(test_score)
+
+OUTPUT:
+0.07573289902280131
+0.2435064935064935
 '''
 
 #                           DECISION TREE
