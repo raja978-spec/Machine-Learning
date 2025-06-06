@@ -7,4 +7,6 @@
 4. What is the formula used in KNN, and the importance of k in KNN?
 5. What is the visualization chart for KNN classification and regression, how
    KNN works for classification and regression.
+6. List of performance metric for regression and classification?
+7. Difference between R-square and Adjust R-square
 '''
