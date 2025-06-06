@@ -436,14 +436,14 @@ Image recognition (object detection)
 '''
 
 
-#                      K-NEAREST NEIGHBORS
+#     K-NEAREST NEIGHBORS FOR CLASSIFICATION AND REGRESSION
 '''
  It is a classification technique that uses set of data points to learn
  to predict new data point.
 
  ALGORITHM:
 
- step1: choose one unknow data point
+ step1: choose a value of k
  step2: find the distance between unknow data point to all
         other data point
  step3: if any of the other points are near to the unknow point
@@ -451,8 +451,18 @@ Image recognition (object detection)
         other points.
  step4: predict the response of unknown point.
 
- For formula and graph image refer  KNN.docx
+ Example:
+ If k=3 means we have to find top three nearest neighbour
+ data points by finding the distance from unknow data point to
+ all other data points, if the value of k is large
+ then bias will increase, for low k value bias will decrease and
+ variance will increase.
 
+ For regression it will find the average of the nearest data points.
+ For classification it will take max no of nearest data point from
+ one class.
+
+ For formula and graph image simple explanation refer  KNN.docx
 
  EXAMPLE:
 
@@ -505,6 +515,9 @@ print(cm)
 OUTPUT: 
 [[56  6]
  [ 4 34]]
+
+REFER  Projects\Diabeted_prediction_with_KNN\diabetes_predictor.py for another
+code example
 '''
 
 #                           DECISION TREE
@@ -875,6 +888,8 @@ See data-preprocessing(feature scaling).docx for more info
 
 #                RANDOM FOREST FOR CLASSIFICATION AND REGRESSION
 '''
+
+
 A Random Forest model is used for supervised machine learning tasks, specifically for:
 1. Classification
 Predicting a category or class label (e.g., spam or not spam, disease or no disease).
