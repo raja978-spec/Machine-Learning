@@ -42,9 +42,8 @@
 #                  EXAMPLE FOR KNN REGRESSION
 
 import pandas as pd
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV, RandomizedSearchCV
 from sklearn.neighbors import KNeighborsRegressor
-from sklearn.metrics import r2_score
 
 df = pd.read_csv('diabetes.csv')
 
@@ -53,14 +52,35 @@ labels  = df['Outcome']
 
 train_feature, test_feature, train_labels, test_labels = train_test_split(features,labels, test_size=0.2)
 
-model = KNeighborsRegressor(n_neighbors=2)
+model = KNeighborsRegressor()
 model.fit(train_feature, train_labels)
 
-validation_prediction = model.predict(train_feature)
-test_prediction = model.predict(test_feature)
+param_grid = {
+    'n_neighbors':[5,6,7,8],
+    'leaf_size':[31,32,33,34]
+}
 
-val_score = r2_score(train_labels, validation_prediction)
-test_score = r2_score(test_labels, test_prediction)
+l=len(param_grid['n_neighbors'])*len(param_grid['leaf_size'])
 
-print(val_score)
-print(test_score)
+print('Total no of models that are going to build with grid search is',
+      l)#16
+
+# This will checks all the combinations from n_neighbors and leaf_size
+model_grid_search = GridSearchCV(estimator=model, 
+                                 param_grid=param_grid, 
+                                 cv=5)
+model_grid_search.fit(train_feature, train_labels)
+print(model_grid_search.best_params_)
+print(model_grid_search.best_score_)
+
+# This will check random values from both hyper parameter
+# Here n_iter means that it will checks only 10 combinations
+# out of 16 in random way
+model_random_search = RandomizedSearchCV(estimator=model,
+                                         param_distributions=param_grid,
+                                         cv=10,
+                                         n_iter=10
+                                         )
+model_random_search.fit(train_feature, train_labels)
+print(model_random_search.best_params_)
+print(model_grid_search.best_score_)

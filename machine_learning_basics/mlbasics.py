@@ -895,6 +895,17 @@ SOLUTIONS FOR UNDERFITTING
  controls the step size of weight update), increase number of layers 
  in model, regularization, increasing no of epoch
 
+ SEE machine_learning_basics\hyper_parameter_tuning, Grid Search Cv, Random search cv.docx
+ For more info
+'''
+
+#        TYPES OF HYPER PARAMETER TUNING
+'''
+1. Grid Search CV - checks all possible combinations for hyper parameter values
+2. Random Search CV - checks random combination of values for hyper parameter
+
+SEE machine_learning_basics\hyper_parameter_tuning, Grid Search Cv, Random search cv.docx
+For more info
 '''
 
 #            REPRODUCIBILITY OF MODEL PREDICTION
