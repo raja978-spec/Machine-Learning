@@ -950,3 +950,51 @@ Reduces overfitting (better generalization than single decision trees).
 Can handle both numerical and categorical features.
 
 '''
+
+#                   NAIVE BAYES CLASSIFIER
+'''
+It is a supervised learning probabilistic classifier model, it works with the
+concept for conditional probability, where the model finds the probability of
+already occurred event's event.
+
+EX: Given an event B has already occurred what is the probability of 
+occurrence of event A?
+
+Represented as P(A/B)
+
+And also it assumption all the features all independent.
+
+EX: if age increase height and weight of the people will increase,
+    Here height and weight are dependent with age, but in navis bayes
+    it assumes both of the features are independent.
+
+See machine_learning_basics\Naive Bayes Classifier.docx for more
+
+EXAMPLE CODE FROM SKLEARN:
+import pandas as pd
+from sklearn.naive_bayes import GaussianNB
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import classification_report
+from sklearn.model_selection import train_test_split
+import numpy as np
+
+data = pd.read_csv('IRIS.csv')
+
+features = data.iloc[:,:4]
+
+labels = data.iloc[:,-1]
+
+transformer = LabelEncoder()
+labels = transformer.fit_transform(labels)
+
+train_features, test_features,train_labels, test_lables = train_test_split(features,
+                                                                            labels, 
+                                                                            test_size=0.2, random_state=42)
+model = GaussianNB()
+model.fit(train_features, train_labels)
+
+predicted_lables = model.predict(test_features)
+
+report = classification_report(test_lables, predicted_lables)
+print(report)
+'''
