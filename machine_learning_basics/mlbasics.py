@@ -998,3 +998,57 @@ predicted_lables = model.predict(test_features)
 report = classification_report(test_lables, predicted_lables)
 print(report)
 '''
+
+
+#                            SVM
+'''
+It is a supervised learning technique used to build classification,
+regression model.
+
+For binary Classification two category of class will be classified in
+single linear line called vector.
+
+But for multi classification it Builds one SVM per class, separating that class 
+from all others.
+
+Imagine you have 3 classes: A, B, and C.
+
+In One-vs-Rest:
+
+Model 1: A vs (B+C)
+
+Model 2: B vs (A+C)
+
+Model 3: C vs (A+B)
+
+Each model has its own linear hyperplane.
+
+                         THRESHOLD
+
+Is the value that separates the data in different category
+
+                          MARGIN
+
+Nearest data point to the threshold are called margin
+
+
+SEE machine_learning_basics\SVM.docx for more
+
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
