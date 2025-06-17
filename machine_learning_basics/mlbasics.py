@@ -1031,9 +1031,98 @@ Is the value that separates the data in different category
 
 Nearest data point to the threshold are called margin
 
+Has kernel functions which are helps to increase the dim of the
+dataset to classify the data in correct dim.
+1. Polynomial kernel function - tries to classify dataset with ploy curve
+2. Radial kernel function - automatically pickes some dim where the
+                            data is classified.
+
+                     EXAMPLE CODE FOR NORMAL SVM AND WITH KERNEL FUNCTION
+
+from sklearn.svm import LinearSVC
+from sklearn.metrics import classification_report, accuracy_score
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn import svm
+import pandas as pd
+
+data = pd.read_csv('fetal_health.csv')
+
+features = data.iloc[:,:-1]
+
+labels = data.iloc[:,-1:]
+
+min_max_transformers = MinMaxScaler()
+standard_scaler = StandardScaler()
+
+features = min_max_transformers.fit_transform(features)
+features = standard_scaler.fit_transform(features)
+
+train_feature, test_feature, train_labels, test_labels = train_test_split(features, labels,
+                                                                          test_size=0.2)
+model = LinearSVC(loss='hinge')
+model.fit(train_feature, train_labels)
+
+train_predicted_labels = model.predict(train_feature)
+test_predicted_labels = model.predict(test_feature)
+
+val_accuracy = accuracy_score(train_labels, train_predicted_labels)
+test_accuracy = accuracy_score(test_labels, test_predicted_labels)
+
+print(val_accuracy, test_accuracy)
+#0.908235294117647 0.892018779342723
+# Overfitting
+
+                        # Model 2 with polynomial kernel
+                
+model2= svm.SVC(kernel='poly', degree=3, coef0=1, C=5)
+model2.fit(train_feature, train_labels)
+
+train_predicted_labels = model2.predict(train_feature)
+test_predicted_labels = model2.predict(test_feature)
+
+val_accuracy = accuracy_score(train_labels, train_predicted_labels)
+test_accuracy = accuracy_score(test_labels, test_predicted_labels)
+
+print(val_accuracy, test_accuracy)
+#0.9658823529411765 0.9295774647887324
+
+                         #MODEL 3 WITH RADIAL KERNEL 
+model3 = svm.SVC(kernel='rbf', C=9)
+model3.fit(train_feature, train_labels)
+
+train_predicted_labels = model3.predict(train_feature)
+test_predicted_labels = model3.predict(test_feature)
+
+val_accuracy = accuracy_score(train_labels, train_predicted_labels)
+test_accuracy = accuracy_score(test_labels, test_predicted_labels)
+
+print(val_accuracy, test_accuracy)
+#0.9694117647058823 0.9084507042253521
+
+                        WHAT IS HYPER PARAMETER C?
+
+C stands for "cost" of misclassification.
+
+It determines how much you want to avoid misclassifying training 
+examples.
+
+📏 How it works:
+✅ Low C value (e.g., C=0.1):
+The model will allow more misclassifications to achieve a wider 
+margin.
+Think: "I’m okay with some mistakes if the boundary is smoother."
+More regularization → less overfitting, may underfit.
+
+🚫 High C value (e.g., C=10, C=100):
+The model will try to classify all training data correctly, possibly 
+creating a very tight decision boundary.
+Think: "Make no mistakes, even if the margin becomes narrow."
+Less regularization → higher chance of overfitting.
+
+ACTUAL CODE PATH: Projects\SVM_project\svm_model.py
 
 SEE machine_learning_basics\SVM.docx for more
-
 '''
 
 
