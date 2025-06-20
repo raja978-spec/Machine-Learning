@@ -56,6 +56,14 @@ and the model groups similar data points without knowing the correct output.
 
 Example: Clustering Fruits Based on Features (Unsupervised Learning)
 
+Unsupervised learning is used in Anomaly detection, Dimensionality 
+reduction (feature extraction - process of combining correlated
+features into single feature)
+
+Dimensionality reduction should be done before going to give the
+data to machine to train it. So that the machine can learn in more
+faster manner.
+
 from sklearn.cluster import KMeans
 
 # Features: [Weight, Texture]
@@ -100,6 +108,26 @@ y_train = [150000, 250000, 180000]  # Labels: House prices
 
 The model learns the relationship between X_train and y_train so it can predict 
 prices for new houses.
+
+                            SEMI SUPERVISED LEARNING
+
+Since labeling data is usually time-consuming and costly, you will often
+have plenty of unlabeled instances, and few labeled instances. Some
+algorithms can deal with data that’s partially labeled. This is called
+semisupervised learning.
+
+EX:
+Some photo-hosting services, such as Google Photos, are good examples
+ of this. Once you upload all your family photos to the service, it
+ automatically recognizes that the same person A shows up in photos 1, 5,
+ and 11, while another person B shows up in photos 2, 5, and 7. This is the
+ unsupervised part of the algorithm (clustering). Now all the system needs
+ is for you to tell it who these people are. Just add one label per person and
+ it is able to name everyone in every photo, which is useful for searching
+ photos.
+ 4
+ Most semisupervised learning algorithms are combinations of
+ unsupervised and supervised algorithms.
 '''
 
 #                       REGRESSION
