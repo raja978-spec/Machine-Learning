@@ -621,9 +621,19 @@ EX: in coin toss head probability - 0 (no randomness) (when a coin has head
                                                          both side)
 
 
+SUMMARY:
+✅ Corrected and Clear Version:
+1.	Entropy measures how mixed or impure the dataset is — it tells us whether the dataset has multiple classes and how evenly they are distributed.
+2.	Information Gain helps us choose the best feature to split the data, so that the resulting groups are as pure (separated by class) as possible.
+________________________________________
+🧠 Why This Matters:
+•	If entropy is 0, the data is already pure (only one class).
+•	If entropy is high, the data has a mix of classes.
+•	Information Gain looks at how much entropy is reduced when we split the data using a feature.
+
                                                          
             REFER Decision_tree.docx for example dataset with DT pic
-                                                         
+                                                 
 
 EX:
 
