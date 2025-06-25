@@ -1163,6 +1163,65 @@ ACTUAL CODE PATH: Projects\SVM_project\svm_model.py
 SEE machine_learning_basics\SVM.docx for more
 '''
 
+#     VISUALIZE HIGH DIM DATA INTO 2D WITH MACHINE LEARNING
+'''
+t-SNE and PCA in Dimensionality Reduction:
+t-SNE (t-Distributed Stochastic Neighbor Embedding) is a non-linear 
+technique used to reduce high-dimensional data into 2D or 3D for 
+visualization, focusing on preserving local similarities 
+(i.e., points close in high dimensions stay close in low dimensions).
+
+PCA (Principal Component Analysis) is a linear method that reduces 
+dimensions by preserving the overall variance in the data.
+
+Key Difference:
+PCA: Preserves global structure (variance).
+t-SNE: Preserves local structure (neighborhood relationships).
+
+from sklearn.datasets import load_iris
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+
+# Load dataset
+iris = load_iris()
+X = iris.data
+y = iris.target
+target_names = iris.target_names
+
+# PCA transformation
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X)
+
+# t-SNE transformation
+tsne = TSNE(n_components=2, random_state=42)
+X_tsne = tsne.fit_transform(X)
+
+# Plot PCA
+plt.figure(figsize=(12, 5))
+
+plt.subplot(1, 2, 1)
+for i in range(3):
+    plt.scatter(X_pca[y == i, 0], X_pca[y == i, 1], label=target_names[i])
+plt.title("PCA Result")
+plt.xlabel("PC1")
+plt.ylabel("PC2")
+plt.legend()
+
+# Plot t-SNE
+plt.subplot(1, 2, 2)
+for i in range(3):
+    plt.scatter(X_tsne[y == i, 0], X_tsne[y == i, 1], label=target_names[i])
+plt.title("t-SNE Result")
+plt.xlabel("Dim 1")
+plt.ylabel("Dim 2")
+plt.legend()
+
+plt.tight_layout()
+plt.show()
+
+SEE T-DSNE_PCA_for_visualization.docx for output
+'''
 
 
 
