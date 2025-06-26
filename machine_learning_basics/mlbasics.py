@@ -631,6 +631,8 @@ ________________________________________
 •	If entropy is high, the data has a mix of classes.
 •	Information Gain looks at how much entropy is reduced when we split the data using a feature.
 
+There is another 2 efficient algorithm are also used to form decision
+tree that is called CART, c4.5 see the below document for more info.
                                                          
             REFER Decision_tree.docx for example dataset with DT pic
                                                  
