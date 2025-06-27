@@ -673,6 +673,34 @@ score = metrics.accuracy_score(test_labels, prediction)
 print(score)
 
 
+EXAMPLE 2 CODE TO VIEW DECISION TREE FORMED BY MODEL
+
+from sklearn.datasets import load_iris
+from sklearn import tree
+import matplotlib.pyplot as plt
+
+iris = load_iris()
+
+features = iris.data
+labels = iris.target
+
+model = tree.DecisionTreeClassifier(
+    criterion='entropy',
+    max_depth=3,
+    min_samples_leaf=4
+)
+model.fit(features, labels)
+
+
+fig, ax = plt.subplots(figsize=(10,10))
+
+dt = tree.plot_tree(model, ax=ax, feature_names=['sepal_length',
+                                          'sepal_width',
+                                          'petal_length',
+                                          'petal_width'
+                                          ])
+plt.show()
+
 '''
 
 #                    LOGISTIC   REGRESSION
@@ -1226,10 +1254,58 @@ SEE T-DSNE_PCA_for_visualization.docx for output
 '''
 
 
+#   STEPS TO BUILD AND SELECT BEST MODEL
+'''
+1.Understand Your Data
+
+Small data → Logistic Regression, Naive Bayes
+
+Tabular → Random Forest, XGBoost
+
+Image → CNN
+
+Text/Sequence → LSTM, Transformers
+
+2.Try Multiple Models
+
+Start with simple ones
+
+Use models like SVM, Random Forest, XGBoost, MLP, CNN, RNN based on data type
+
+3.Evaluate with Cross-Validation
+
+Use k-fold to avoid overfitting
+
+Check metrics like Accuracy, F1-score, ROC AUC
+
+4.Use Right Evaluation Metrics
+
+Balanced data → Accuracy, AUC
+
+Imbalanced data → F1, Precision, Recall
+
+5.Model Selection Tools
+
+Grid Search, Random Search, AutoML (AutoKeras, TPOT)
+
+6.Deep Learning Use
+
+For large data + complex problems (images, text)
+
+Needs GPU and more time
+
+7.Preprocessing is Essential
+
+Scale, encode, clean data
+
+Use feature selection or dimensionality reduction
+
+8.Experiment and Compare
+
+Track and compare models using MLFlow or W&B
 
 
-
-
+'''
 
 
 
